@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.nuxt/
+.output/
+dist/
+coverage/
+*.log
+.DS_Store
+plan.md
+note.md

@@ -1,0 +1,8 @@
+{
+  "name": "@commerce/shared-ui",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "description": "Shared UI primitives for the commerce portal."
+}

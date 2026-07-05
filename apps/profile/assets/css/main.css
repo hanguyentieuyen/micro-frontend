@@ -1,0 +1,132 @@
+:root {
+  --bg: #edf6f7;
+  --surface: rgba(255, 255, 255, 0.88);
+  --text: #163247;
+  --muted: #5f7286;
+  --accent: #0f5f8c;
+  --line: rgba(22, 50, 71, 0.12);
+  --shadow: 0 18px 55px rgba(22, 50, 71, 0.08);
+}
+
+* { box-sizing: border-box; }
+html, body, #__nuxt { min-height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #eef7f8 0%, #ddecef 100%);
+}
+
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding-left: 1.2rem; }
+
+.profile-app-shell {
+  width: min(1060px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.profile-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.profile-nav a {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+}
+
+.panel {
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.stack-md > * + * { margin-top: 1rem; }
+.stack-lg > * + * { margin-top: 1.5rem; }
+.copy { color: var(--muted); line-height: 1.7; }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.8fr);
+  gap: 1.25rem;
+}
+
+.user-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, rgba(15, 95, 140, 0.18), rgba(255,255,255,0.95));
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.key-value-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.key-value-list li,
+.activity-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+}
+
+.activity-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.activity-list li strong,
+.key-value-list li strong {
+  color: var(--text);
+}
+
+@media (max-width: 840px) {
+  .profile-header,
+  .profile-grid,
+  .user-card {
+    grid-template-columns: 1fr;
+    display: block;
+  }
+
+  .profile-nav {
+    margin-top: 1rem;
+  }
+
+  .avatar {
+    margin-bottom: 1rem;
+  }
+}

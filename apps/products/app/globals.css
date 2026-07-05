@@ -1,0 +1,142 @@
+:root {
+  --bg: #f7f3ea;
+  --surface: #fffdf8;
+  --text: #1e293b;
+  --muted: #667085;
+  --accent: #0f766e;
+  --accent-soft: rgba(15, 118, 110, 0.12);
+  --line: rgba(30, 41, 59, 0.12);
+  --shadow: 0 18px 55px rgba(15, 23, 42, 0.08);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #f8f4ea 0%, #f2ebdf 100%);
+}
+
+button { font: inherit; }
+
+h1, h2, h3, p { margin: 0; }
+
+.products-page {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.products-hero,
+.products-section {
+  background: rgba(255, 253, 248, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.products-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.7fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.stack-md > * + * { margin-top: 1rem; }
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.copy {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.hero-stat {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(15, 118, 110, 0.14), rgba(255, 255, 255, 0.95));
+}
+
+.hero-stat__value {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.hero-stat__label {
+  text-align: center;
+  color: var(--muted);
+}
+
+.products-section {
+  margin-top: 1.5rem;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+}
+
+.section-copy { max-width: 28rem; }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  border-radius: 22px;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: var(--surface);
+  padding: 1.2rem;
+}
+
+.product-card__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.product-card__price {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.product-card__button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 780px) {
+  .products-hero,
+  .section-head {
+    grid-template-columns: 1fr;
+    display: block;
+  }
+
+  .section-copy {
+    margin-top: 0.75rem;
+  }
+}

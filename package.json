@@ -1,0 +1,34 @@
+{
+  "name": "commerce-portal-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @commerce/shell",
+    "dev:shell": "npm run dev --workspace @commerce/shell",
+    "dev:products": "npm run dev --workspace @commerce/products",
+    "dev:cart": "npm run dev --workspace @commerce/cart",
+    "dev:profile": "npm run dev --workspace @commerce/profile",
+    "build": "npm run build --workspaces --if-present",
+    "build:shell": "npm run build --workspace @commerce/shell",
+    "build:products": "npm run build --workspace @commerce/products",
+    "build:cart": "npm run build --workspace @commerce/cart",
+    "build:profile": "npm run build --workspace @commerce/profile",
+    "typecheck": "npm run typecheck:shell && npm run typecheck:products && npm run typecheck:cart && npm run typecheck:profile",
+    "typecheck:shell": "npm run typecheck --workspace @commerce/shell",
+    "typecheck:products": "npm run typecheck --workspace @commerce/products",
+    "typecheck:cart": "npm run typecheck --workspace @commerce/cart",
+    "typecheck:profile": "npm run typecheck --workspace @commerce/profile"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@oxc-minify/binding-win32-x64-msvc": "^0.132.0",
+    "@oxc-parser/binding-win32-x64-msvc": "^0.132.0",
+    "@oxc-transform/binding-win32-x64-msvc": "^0.132.0"
+  }
+}

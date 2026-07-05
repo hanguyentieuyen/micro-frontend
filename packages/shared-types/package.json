@@ -1,0 +1,8 @@
+{
+  "name": "@commerce/shared-types",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "description": "Shared contracts for the commerce portal."
+}

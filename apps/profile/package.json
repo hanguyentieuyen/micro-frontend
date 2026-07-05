@@ -1,0 +1,19 @@
+{
+  "name": "@commerce/profile",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "node ./scripts/run-nuxi.mjs dev --port 3003",
+    "build": "node ./scripts/run-nuxi.mjs build",
+    "preview": "node ./scripts/run-nuxi.mjs preview --port 3003",
+    "typecheck": "node ./scripts/run-nuxi.mjs typecheck"
+  },
+  "dependencies": {
+    "@commerce/shared-types": "*",
+    "nuxt": "^3.12.4"
+  },
+  "devDependencies": {
+    "vue-tsc": "^2.0.29",
+    "typescript": "5.4.5"
+  }
+}
