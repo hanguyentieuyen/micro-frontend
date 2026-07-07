@@ -138,6 +138,18 @@ ul {
   font-size: 0.95rem;
 }
 
+.route-note,
+.remote-inline-copy {
+  color: var(--ui-muted);
+}
+
+.route-note a,
+.remote-inline-copy a {
+  color: var(--ui-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
 .checklist {
   color: var(--ui-text);
   line-height: 1.8;
@@ -147,6 +159,89 @@ ul {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
+}
+
+.remote-surface {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 252, 246, 0.96));
+}
+
+.remote-toolbar {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.remote-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.remote-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.remote-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--ui-radius-pill);
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ui-muted);
+  font-size: 0.92rem;
+}
+
+.remote-frame-shell {
+  position: relative;
+  min-height: 960px;
+  border-radius: calc(var(--ui-radius-card) + 4px);
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.remote-frame-shell__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 252, 246, 0.92), rgba(243, 237, 226, 0.92));
+  color: var(--ui-muted);
+  text-align: center;
+  z-index: 1;
+}
+
+.remote-frame {
+  display: block;
+  width: 100%;
+  min-height: 960px;
+  border: 0;
+  opacity: 0;
+  background: transparent;
+}
+
+.remote-frame--visible {
+  opacity: 1;
+}
+
+.remote-helper {
+  color: var(--ui-muted);
+  line-height: 1.7;
+}
+
+.remote-helper code,
+.ui-copy code {
+  padding: 0.18rem 0.42rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(15, 118, 110, 0.12);
 }
 
 @media (max-width: 860px) {
@@ -163,6 +258,14 @@ ul {
   .two-column-copy {
     grid-template-columns: 1fr;
   }
+
+  .remote-toolbar {
+    flex-direction: column;
+  }
+
+  .remote-actions {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 560px) {
@@ -177,5 +280,10 @@ ul {
   .shell-nav-link {
     flex: 1 1 calc(50% - 0.75rem);
     text-align: center;
+  }
+
+  .remote-frame-shell,
+  .remote-frame {
+    min-height: 780px;
   }
 }
