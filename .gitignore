@@ -5,6 +5,9 @@ node_modules/
 dist/
 coverage/
 *.log
+*.tsbuildinfo
 .DS_Store
+.agents/
+skills-lock.json
 plan.md
 note.md

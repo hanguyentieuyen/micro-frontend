@@ -19,7 +19,7 @@ export function TopNav() {
   return (
     <header className="shell-header">
       <div>
-        <p className="shell-eyebrow">Commerce Portal</p>
+        <p className="shell-eyebrow ui-eyebrow">Commerce Portal</p>
         <h1 className="shell-title">Shell App</h1>
       </div>
 

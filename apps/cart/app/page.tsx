@@ -47,12 +47,12 @@ function CartLine({ product, quantity, lineTotal }: { product: Product; quantity
 
 export default function CartHomePage() {
   return (
-    <main className="cart-page">
-      <section className="cart-hero">
-        <div className="stack-md">
-          <p className="eyebrow">Day 11 / Cart Domain</p>
+    <main className="ui-container cart-page">
+      <section className="ui-section cart-hero">
+        <div className="ui-stack-md">
+          <p className="ui-eyebrow">Day 11 / Cart Domain</p>
           <h1>Cart app owns badge state and basket summary.</h1>
-          <p className="copy">
+          <p className="ui-copy">
             This Next.js domain is intentionally focused on cart data, line items, and totals.
             It is a clean place to later consume events like <code>cart:item-added</code>.
           </p>
@@ -65,9 +65,9 @@ export default function CartHomePage() {
       </section>
 
       <section className="cart-grid">
-        <section className="panel stack-md">
+        <section className="ui-section ui-stack-md">
           <div>
-            <p className="eyebrow">Cart items</p>
+            <p className="ui-eyebrow">Cart items</p>
             <h2>Mock basket list</h2>
           </div>
           <div className="cart-lines">
@@ -77,9 +77,9 @@ export default function CartHomePage() {
           </div>
         </section>
 
-        <aside className="panel stack-md summary-panel">
+        <aside className="ui-section ui-stack-md summary-panel">
           <div>
-            <p className="eyebrow">Summary</p>
+            <p className="ui-eyebrow">Summary</p>
             <h2>{formatPrice(subtotal)}</h2>
           </div>
           <ul className="summary-list">
@@ -96,7 +96,7 @@ export default function CartHomePage() {
               <strong>Calculated later</strong>
             </li>
           </ul>
-          <button type="button" className="summary-button">Proceed to checkout</button>
+          <button type="button" className="ui-button ui-button--primary summary-button">Proceed to checkout</button>
         </aside>
       </section>
     </main>

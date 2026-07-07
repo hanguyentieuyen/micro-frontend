@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import '@commerce/shared-ui/styles.css';
+
 import { TopNav } from '../components/top-nav';
 
 import './globals.css';
@@ -14,7 +16,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <div className="shell-page">
+        <div className="ui-container shell-page">
           <TopNav />
           <main className="shell-main">{children}</main>
         </div>

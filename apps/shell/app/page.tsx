@@ -12,10 +12,10 @@ export default function HomePage() {
   return (
     <div className="stack-xl">
       <section className="hero-grid">
-        <div className="panel panel--feature stack-md">
-          <p className="panel-eyebrow">Week 2 / Day 9</p>
+        <div className="ui-section panel--feature ui-stack-md">
+          <p className="ui-eyebrow">Week 2 / Day 9</p>
           <h2>Shell boundary is ready for remote integration.</h2>
-          <p className="panel-copy">
+          <p className="ui-copy">
             This Next.js shell owns the global layout, top navigation, and route skeleton.
             The business logic for domain features stays in remote apps.
           </p>
@@ -26,7 +26,7 @@ export default function HomePage() {
           </ul>
         </div>
 
-        <aside className="panel stack-md">
+        <aside className="ui-section ui-stack-md">
           <h3 className="panel-subtitle">Planned routes</h3>
           <div className="route-grid">
             {NAV_ITEMS.map((item) => (
@@ -39,8 +39,8 @@ export default function HomePage() {
         </aside>
       </section>
 
-      <section className="panel stack-md">
-        <p className="panel-eyebrow">Architecture checkpoint</p>
+      <section className="ui-section ui-stack-md">
+        <p className="ui-eyebrow">Architecture checkpoint</p>
         <h3 className="panel-subtitle">What belongs in the shell?</h3>
         <div className="two-column-copy">
           <div>

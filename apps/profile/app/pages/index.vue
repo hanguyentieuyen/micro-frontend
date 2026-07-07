@@ -23,15 +23,15 @@ const activity = [
 
 <template>
   <div class="profile-grid">
-    <section class="panel stack-lg">
+    <section class="ui-section ui-stack-lg">
       <div class="user-card">
         <div class="avatar">MC</div>
-        <div class="stack-md">
+        <div class="ui-stack-md">
           <div>
-            <p class="eyebrow">Profile overview</p>
+            <p class="ui-eyebrow">Profile overview</p>
             <h2>{{ user.name }}</h2>
           </div>
-          <p class="copy">
+          <p class="ui-copy">
             This Nuxt domain keeps account-facing experiences separate from the shell, products,
             and cart domains.
           </p>
@@ -54,9 +54,9 @@ const activity = [
       </ul>
     </section>
 
-    <aside class="panel stack-md">
+    <aside class="ui-section ui-stack-md">
       <div>
-        <p class="eyebrow">Recent activity</p>
+        <p class="ui-eyebrow">Recent activity</p>
         <h2>Account snapshot</h2>
       </div>
       <ul class="activity-list">

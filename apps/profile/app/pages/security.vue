@@ -7,11 +7,11 @@ const checks = [
 </script>
 
 <template>
-  <section class="panel stack-lg">
-    <div class="stack-md">
-      <p class="eyebrow">Security route</p>
+  <section class="ui-section ui-stack-lg">
+    <div class="ui-stack-md">
+      <p class="ui-eyebrow">Security route</p>
       <h2>Security preferences placeholder</h2>
-      <p class="copy">
+      <p class="ui-copy">
         This route proves the profile app owns more than a single screen and can evolve independently.
       </p>
     </div>

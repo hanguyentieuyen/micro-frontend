@@ -4,5 +4,6 @@
   "version": "0.0.0",
   "main": "index.ts",
   "types": "index.ts",
+  "style": "styles.css",
   "description": "Shared UI primitives for the commerce portal."
 }

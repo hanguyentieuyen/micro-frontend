@@ -125,6 +125,11 @@ npm run typecheck:cart
 npm run typecheck:profile
 ```
 
+Current note:
+
+- `shell`, `products`, and `cart` typecheck successfully.
+- `profile` currently has a Nuxt-generated `.nuxt/types/plugins.d.ts` parsing issue in this workspace, while `npm run build:profile` still passes.
+
 ## Domain Boundaries
 
 This is the most important part of the repository.
@@ -194,19 +199,25 @@ The shell should not keep:
 `packages/shared-types`
 
 - is the single source of truth for cross-app contracts
-- currently contains types such as `User`, `Product`, `CartItem`, and `MicroAppEventMap`
+- contains `User`, `Product`, `CartItem`, typed event payloads, `MicroAppEventMap`, and the reusable `MICRO_APP_EVENTS` constant
 
 `packages/shared-ui`
 
-- should contain only UI and layout primitives
-- should not contain business logic
-- is still a placeholder and will be expanded in the next steps
+- contains semantic design tokens and framework-agnostic CSS primitives
+- is imported by all apps so each one can still run independently with the same base UI contract
+- should not contain business logic or domain-specific components
 
 ### Default Rules
 
 - `remote -> remote direct import`: not allowed
 - `remote -> shared/*`: allowed
 - `remote -> shell`: only through event contracts or a very small host API
+
+## Shared UI Approach
+
+- `@commerce/shared-ui` is intentionally CSS-first so both `Next.js` and `Nuxt` can consume the same primitives without forcing shared framework components too early.
+- The shared package owns semantic tokens such as `--ui-bg`, `--ui-surface`, and `--ui-accent`, plus primitive classes like `ui-section`, `ui-card`, `ui-button`, and `ui-copy`.
+- Each app keeps its own visual identity by overriding the semantic `--ui-*` tokens in local global CSS while leaving domain-specific layouts inside the domain app.
 
 ## Overall Architecture
 
@@ -268,8 +279,8 @@ Already in place:
 - `products` built with `Next.js`
 - `cart` built with `Next.js`
 - `profile` built with `Nuxt`
-- `shared-types` with the initial contracts
-- `shared-ui` placeholder
+- `shared-types` with typed cross-app contracts and reusable event-name constants
+- `shared-ui` with semantic tokens and reusable CSS primitives adopted by all apps
 
 Not finished yet:
 

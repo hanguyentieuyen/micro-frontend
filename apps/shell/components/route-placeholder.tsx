@@ -12,14 +12,14 @@ export function RoutePlaceholder({
   checklist,
 }: RoutePlaceholderProps) {
   return (
-    <section className="panel stack-lg">
-      <div className="stack-sm">
-        <p className="panel-eyebrow">{eyebrow}</p>
+    <section className="ui-section ui-stack-lg">
+      <div className="ui-stack-sm">
+        <p className="ui-eyebrow">{eyebrow}</p>
         <h2>{title}</h2>
-        <p className="panel-copy">{description}</p>
+        <p className="ui-copy">{description}</p>
       </div>
 
-      <div className="stack-sm">
+      <div className="ui-stack-sm">
         <h3 className="panel-subtitle">Next step for this route</h3>
         <ul className="checklist">
           {checklist.map((item) => (

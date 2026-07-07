@@ -12,14 +12,14 @@ function formatPrice(price: number) {
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="product-card">
+    <article className="ui-card product-card">
       <div className="product-card__meta">
         <span>{product.category}</span>
         <span>{product.rating.toFixed(1)} / 5</span>
       </div>
       <h3>{product.name}</h3>
       <p className="product-card__price">{formatPrice(product.price)}</p>
-      <button type="button" className="product-card__button">
+      <button type="button" className="ui-button ui-button--primary product-card__button">
         Add to cart
       </button>
     </article>
@@ -28,12 +28,12 @@ function ProductCard({ product }: { product: Product }) {
 
 export default function ProductsHomePage() {
   return (
-    <main className="products-page">
-      <section className="products-hero">
-        <div className="stack-md">
-          <p className="eyebrow">Day 10 / Products Domain</p>
+    <main className="ui-container products-page">
+      <section className="ui-section products-hero">
+        <div className="ui-stack-md">
+          <p className="ui-eyebrow">Day 10 / Products Domain</p>
           <h1>Products app runs independently and owns catalog UI.</h1>
-          <p className="copy">
+          <p className="ui-copy">
             This Next.js domain focuses on one job: rendering product discovery.
             It should not know cart totals, shell layout rules, or profile concerns.
           </p>
@@ -45,13 +45,13 @@ export default function ProductsHomePage() {
         </div>
       </section>
 
-      <section className="products-section stack-md">
+      <section className="ui-section ui-stack-md products-section">
         <div className="section-head">
           <div>
-            <p className="eyebrow">Catalog preview</p>
+            <p className="ui-eyebrow">Catalog preview</p>
             <h2>Mock product list</h2>
           </div>
-          <p className="copy section-copy">This is the minimum viable products route for the learning roadmap.</p>
+          <p className="ui-copy section-copy">This is the minimum viable products route for the learning roadmap.</p>
         </div>
 
         <div className="product-grid">
