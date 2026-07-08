@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { User } from '@commerce/shared-types'
+import { MICRO_APP_EVENTS, type MicroAppEventMap, type User } from '@commerce/shared-types'
 
 const user: User = {
   id: 'u-01',
@@ -19,6 +19,12 @@ const activity = [
   { label: 'Wishlist update', value: '2 new items saved' },
   { label: 'Preference sync', value: 'Marketing email enabled' },
 ]
+
+const authUserChangedEventName = MICRO_APP_EVENTS['auth:user-changed']
+
+const expectedAuthPayload: MicroAppEventMap[typeof authUserChangedEventName] = {
+  userId: user.id,
+}
 </script>
 
 <template>
@@ -52,6 +58,15 @@ const activity = [
           <strong>{{ item.value }}</strong>
         </li>
       </ul>
+
+      <div class="ui-card ui-stack-sm">
+        <p class="ui-eyebrow">Day 15 / Host auth contract</p>
+        <h3>Profile is ready for a typed shell handoff.</h3>
+        <p class="ui-copy">
+          Expected event: <code>{{ authUserChangedEventName }}</code>
+        </p>
+        <p class="ui-copy">userId: {{ expectedAuthPayload.userId }}</p>
+      </div>
     </section>
 
     <aside class="ui-section ui-stack-md">

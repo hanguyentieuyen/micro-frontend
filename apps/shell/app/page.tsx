@@ -1,5 +1,10 @@
 import Link from 'next/link';
 
+import {
+  authUserChangedEventName,
+  authUserChangedPreview,
+  mockShellUser,
+} from '../lib/auth-contract';
 import { NAV_ITEMS } from '../lib/navigation';
 
 const learningGoals = [
@@ -61,6 +66,24 @@ export default function HomePage() {
               <li>Error isolation and explicit fallback states</li>
               <li>More advanced lazy loading and observability</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="ui-section ui-stack-md">
+        <p className="ui-eyebrow">Day 15 / Shared auth contract</p>
+        <h3 className="panel-subtitle">The shell shares a small typed auth boundary.</h3>
+        <div className="two-column-copy">
+          <div className="ui-card ui-stack-sm">
+            <p className="ui-copy">Current shell user: {mockShellUser.name}</p>
+            <p className="ui-copy">email: {mockShellUser.email}</p>
+            <p className="ui-copy">role: {mockShellUser.role}</p>
+          </div>
+          <div className="ui-card ui-stack-sm">
+            <p className="ui-copy">
+              Event name: <code>{authUserChangedEventName}</code>
+            </p>
+            <p className="ui-copy">userId: {authUserChangedPreview.userId}</p>
           </div>
         </div>
       </section>

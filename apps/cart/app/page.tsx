@@ -1,5 +1,9 @@
 import type { CartItem, Product } from '@commerce/shared-types';
 
+import {
+  cartItemAddedEventName,
+  sampleIncomingCartItemAddedPayload,
+} from '../lib/cart-event-contract';
 import { mockCartItems, mockCartProducts } from '../lib/mock-cart';
 
 const productMap = new Map(mockCartProducts.map((product) => [product.id, product]));
@@ -54,7 +58,7 @@ export default function CartHomePage() {
           <h1>Cart app owns badge state and basket summary.</h1>
           <p className="ui-copy">
             This Next.js domain is intentionally focused on cart data, line items, and totals.
-            It is a clean place to later consume events like <code>cart:item-added</code>.
+            It is a clean place to later consume events like <code>{cartItemAddedEventName}</code>.
           </p>
         </div>
 
@@ -98,6 +102,20 @@ export default function CartHomePage() {
           </ul>
           <button type="button" className="ui-button ui-button--primary summary-button">Proceed to checkout</button>
         </aside>
+      </section>
+
+      <section className="ui-section ui-stack-md">
+        <div>
+          <p className="ui-eyebrow">Day 15 / Consumer contract preview</p>
+          <h2>Cart already knows the incoming event shape.</h2>
+        </div>
+        <div className="ui-card ui-stack-sm">
+          <p className="ui-copy">
+            Expected event: <code>{cartItemAddedEventName}</code>
+          </p>
+          <p className="ui-copy">productId: {sampleIncomingCartItemAddedPayload.productId}</p>
+          <p className="ui-copy">quantity: {sampleIncomingCartItemAddedPayload.quantity}</p>
+        </div>
       </section>
     </main>
   );

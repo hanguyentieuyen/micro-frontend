@@ -1,30 +1,6 @@
-import type { Product } from '@commerce/shared-types';
-
+import { ProductsCatalog } from '../components/products-catalog';
+import { cartItemAddedEventName } from '../lib/cart-event-contract';
 import { mockProducts } from '../lib/mock-products';
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(price);
-}
-
-function ProductCard({ product }: { product: Product }) {
-  return (
-    <article className="ui-card product-card">
-      <div className="product-card__meta">
-        <span>{product.category}</span>
-        <span>{product.rating.toFixed(1)} / 5</span>
-      </div>
-      <h3>{product.name}</h3>
-      <p className="product-card__price">{formatPrice(product.price)}</p>
-      <button type="button" className="ui-button ui-button--primary product-card__button">
-        Add to cart
-      </button>
-    </article>
-  );
-}
 
 export default function ProductsHomePage() {
   return (
@@ -51,14 +27,12 @@ export default function ProductsHomePage() {
             <p className="ui-eyebrow">Catalog preview</p>
             <h2>Mock product list</h2>
           </div>
-          <p className="ui-copy section-copy">This is the minimum viable products route for the learning roadmap.</p>
+          <p className="ui-copy section-copy">
+            Day 15 checkpoint: this remote now prepares <code>{cartItemAddedEventName}</code> payloads from shared contracts instead of repeating ad-hoc string literals.
+          </p>
         </div>
 
-        <div className="product-grid">
-          {mockProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <ProductsCatalog products={mockProducts} />
       </section>
     </main>
   );
