@@ -22,6 +22,13 @@ export const mockCartProducts: Product[] = [
     category: 'Footwear',
     rating: 4.7,
   },
+  {
+    id: 'p-cloud-lamp',
+    name: 'Cloud Desk Lamp',
+    price: 74,
+    category: 'Home',
+    rating: 4.6,
+  },
 ];
 
 export const mockCartItems: CartItem[] = [

@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { MICRO_APP_EVENTS, type MicroAppEventMap, type User } from '@commerce/shared-types'
+import {
+  MICRO_APP_EVENTS,
+  isMicroAppEventEnvelope,
+  type MicroAppEventMap,
+  type User,
+} from '@commerce/shared-types'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const user: User = {
   id: 'u-01',
@@ -25,6 +31,32 @@ const authUserChangedEventName = MICRO_APP_EVENTS['auth:user-changed']
 const expectedAuthPayload: MicroAppEventMap[typeof authUserChangedEventName] = {
   userId: user.id,
 }
+
+const receivedAuthUserId = ref<string | null>(null)
+
+function handleMessage(event: MessageEvent) {
+  if (typeof window !== 'undefined' && event.source !== window.parent) {
+    return
+  }
+
+  if (!isMicroAppEventEnvelope(event.data)) {
+    return
+  }
+
+  if (event.data.eventName !== authUserChangedEventName) {
+    return
+  }
+
+  receivedAuthUserId.value = event.data.payload.userId
+}
+
+onMounted(() => {
+  window.addEventListener('message', handleMessage)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('message', handleMessage)
+})
 </script>
 
 <template>
@@ -60,12 +92,15 @@ const expectedAuthPayload: MicroAppEventMap[typeof authUserChangedEventName] = {
       </ul>
 
       <div class="ui-card ui-stack-sm">
-        <p class="ui-eyebrow">Day 15 / Host auth contract</p>
+        <p class="ui-eyebrow">Day 16 / Host auth event</p>
         <h3>Profile is ready for a typed shell handoff.</h3>
         <p class="ui-copy">
           Expected event: <code>{{ authUserChangedEventName }}</code>
         </p>
-        <p class="ui-copy">userId: {{ expectedAuthPayload.userId }}</p>
+        <p class="ui-copy">Expected userId shape: {{ expectedAuthPayload.userId }}</p>
+        <p class="ui-copy">
+          Latest shell sync: <strong>{{ receivedAuthUserId ?? 'Waiting for shell auth context' }}</strong>
+        </p>
       </div>
     </section>
 

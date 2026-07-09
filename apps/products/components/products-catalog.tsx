@@ -2,18 +2,15 @@
 
 import { useState } from 'react';
 
-import type { Product } from '@commerce/shared-types';
+import type { MicroAppEventEnvelope, Product } from '@commerce/shared-types';
 
 import {
   buildCartItemAddedPayload,
   cartItemAddedEventName,
-  type PreparedCartItemAddedPayload,
 } from '../lib/cart-event-contract';
+import { emitCartItemAddedToShell, isEmbeddedInShell } from '../lib/runtime-bridge';
 
-type PreparedCartEvent = {
-  name: typeof cartItemAddedEventName;
-  payload: PreparedCartItemAddedPayload;
-};
+type SentCartEvent = MicroAppEventEnvelope<typeof cartItemAddedEventName>;
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat('en-US', {
@@ -25,10 +22,10 @@ function formatPrice(price: number) {
 
 function ProductCard({
   product,
-  onPrepare,
+  onAdd,
 }: {
   product: Product;
-  onPrepare: (product: Product) => void;
+  onAdd: (product: Product) => void;
 }) {
   return (
     <article className="ui-card product-card">
@@ -41,51 +38,58 @@ function ProductCard({
       <button
         type="button"
         className="ui-button ui-button--primary product-card__button"
-        onClick={() => onPrepare(product)}
+        onClick={() => onAdd(product)}
       >
-        Preview add event
+        Add to cart
       </button>
     </article>
   );
 }
 
 export function ProductsCatalog({ products }: { products: Product[] }) {
-  const [preparedEvent, setPreparedEvent] = useState<PreparedCartEvent | null>(null);
+  const [lastSentEvent, setLastSentEvent] = useState<SentCartEvent | null>(null);
+  const [statusMessage, setStatusMessage] = useState(
+    'Choose any product to emit the typed contract that the shell will translate into cart state.',
+  );
 
-  function prepareCartEvent(product: Product) {
-    setPreparedEvent({
-      name: cartItemAddedEventName,
-      payload: buildCartItemAddedPayload(product),
-    });
+  function handleAdd(product: Product) {
+    const payload = buildCartItemAddedPayload(product);
+    const envelope = emitCartItemAddedToShell(payload);
+
+    setLastSentEvent(envelope);
+    setStatusMessage(
+      isEmbeddedInShell()
+        ? 'Event sent to the shell. The host cart badge should increase immediately.'
+        : 'Event prepared locally. Open this remote inside the shell to see cross-app cart sync.',
+    );
   }
 
   return (
     <div className="ui-stack-md">
       <div className="product-grid">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} onPrepare={prepareCartEvent} />
+          <ProductCard key={product.id} product={product} onAdd={handleAdd} />
         ))}
       </div>
 
       <aside className="ui-section ui-stack-md">
         <div>
-          <p className="ui-eyebrow">Day 15 / Shared contract preview</p>
-          <h3>Products now prepares a typed cart event contract.</h3>
+          <p className="ui-eyebrow">Day 16 / Event producer</p>
+          <h3>Products emits a typed event instead of mutating cart directly.</h3>
         </div>
 
-        {preparedEvent ? (
+        <p className="ui-copy">{statusMessage}</p>
+
+        {lastSentEvent ? (
           <div className="ui-card ui-stack-sm">
             <p className="ui-copy">
-              Event name: <code>{preparedEvent.name}</code>
+              Event name: <code>{lastSentEvent.eventName}</code>
             </p>
-            <p className="ui-copy">productId: {preparedEvent.payload.productId}</p>
-            <p className="ui-copy">quantity: {preparedEvent.payload.quantity}</p>
+            <p className="ui-copy">sourceApp: {lastSentEvent.sourceApp}</p>
+            <p className="ui-copy">productId: {lastSentEvent.payload.productId}</p>
+            <p className="ui-copy">quantity: {lastSentEvent.payload.quantity}</p>
           </div>
-        ) : (
-          <p className="ui-copy">
-            Click any product CTA to preview the exact payload shape that this remote will emit on Day 16.
-          </p>
-        )}
+        ) : null}
       </aside>
     </div>
   );

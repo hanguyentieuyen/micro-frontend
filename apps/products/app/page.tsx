@@ -7,17 +7,16 @@ export default function ProductsHomePage() {
     <main className="ui-container products-page">
       <section className="ui-section products-hero">
         <div className="ui-stack-md">
-          <p className="ui-eyebrow">Day 10 / Products Domain</p>
-          <h1>Products app runs independently and owns catalog UI.</h1>
+          <p className="ui-eyebrow">Week 3 / Day 16</p>
+          <h1>Products now acts as a clean event producer.</h1>
           <p className="ui-copy">
-            This Next.js domain focuses on one job: rendering product discovery.
-            It should not know cart totals, shell layout rules, or profile concerns.
+            This remote still owns product discovery only. When a user adds an item, it emits the typed <code>{cartItemAddedEventName}</code> contract and leaves orchestration to the shell.
           </p>
         </div>
 
         <div className="hero-stat">
           <span className="hero-stat__value">{mockProducts.length}</span>
-          <span className="hero-stat__label">mock items ready for remote exposure</span>
+          <span className="hero-stat__label">typed product cards ready to emit events</span>
         </div>
       </section>
 
@@ -25,10 +24,10 @@ export default function ProductsHomePage() {
         <div className="section-head">
           <div>
             <p className="ui-eyebrow">Catalog preview</p>
-            <h2>Mock product list</h2>
+            <h2>Event-driven product list</h2>
           </div>
           <p className="ui-copy section-copy">
-            Day 15 checkpoint: this remote now prepares <code>{cartItemAddedEventName}</code> payloads from shared contracts instead of repeating ad-hoc string literals.
+            The products domain stays decoupled from cart internals. It only knows the shared contract and lets the host coordinate the next step.
           </p>
         </div>
 
