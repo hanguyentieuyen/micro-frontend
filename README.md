@@ -10,6 +10,26 @@ A learning-focused micro frontend demo built with a `monorepo + domain boundarie
 - runtime composition between `Next.js` and `Nuxt`
 - remote failure isolation and fallback behavior
 - style isolation through `iframe` boundaries plus CSS Modules inside remotes
+- repository-level smoke and integration checks for the core architecture
+
+## Why Micro Frontend For This Demo?
+
+This demo uses micro frontend ideas because the target problem is not “how to split components,” but “how to split ownership.”
+
+The `Commerce Portal` shape makes that visible:
+
+- `shell` owns navigation, routing, host-level fallback UI, and auth handoff
+- `products` owns discovery and emits add-to-cart intent
+- `cart` owns cart presentation and consumes shell-synced snapshots
+- `profile` owns account-facing pages in a different framework
+
+This is a good fit for micro frontend learning because it demonstrates three realistic pressures:
+
+- different teams can own different business domains
+- each domain can stay independently runnable and buildable
+- a larger system can migrate gradually instead of rewriting one giant frontend at once
+
+It is not a good fit for every project. If the app is still small, the team is small, or releases do not need domain-level independence, a monolith or a modular frontend is usually the better trade-off.
 
 ## Stack
 
@@ -24,6 +44,8 @@ A learning-focused micro frontend demo built with a `monorepo + domain boundarie
 - Shared packages:
   - `@commerce/shared-types`
   - `@commerce/shared-ui`
+- Test approach:
+  - Node-based smoke and integration check scripts
 
 ## Repository Structure
 
@@ -38,6 +60,9 @@ packages/
   shared-ui/     # shared tokens and UI primitives
 scripts/
   check-boundaries.mjs
+tests/
+  smoke/
+  integration/
 ```
 
 ## Installation
@@ -62,25 +87,26 @@ Runtime URLs:
 - cart: `http://localhost:3002`
 - profile: `http://localhost:3003`
 
-## Build And Validation
+## Test, Build, And Validation
 
 ```bash
+npm run test
+npm run test:smoke
+npm run test:integration
+npm run check:boundaries
 npm run build:shell
 npm run build:products
 npm run build:cart
 npm run build:profile
-
-npm run typecheck:shell
-npm run typecheck:products
-npm run typecheck:cart
-npm run check:boundaries
+npm run validate
 ```
 
-Notes:
+What each validation layer covers:
 
-- `shell`, `products`, and `cart` typecheck successfully.
-- `profile` builds successfully in the current workspace setup.
-- `check:boundaries` fails if one app imports code directly from another app.
+- `test:smoke`: verifies standalone scripts, route entrypoints, and shared package surfaces exist where the architecture expects them
+- `test:integration`: verifies typed envelopes, route mapping helpers, auth handoff contracts, and the `products -> shell -> cart` add-to-cart flow at the contract level
+- `check:boundaries`: fails if one app imports source code directly from another app
+- `validate`: runs tests, boundary checks, and independent builds for all four apps
 
 ## Runtime Composition Strategy
 
@@ -222,7 +248,7 @@ Each remote is loaded through an `iframe`, so styles from one remote do not leak
 
 ### 2. Domain boundary
 
-Inside `products` and `cart`, domain-specific layout classes now live in CSS Modules instead of broad global selectors.
+Inside `products` and `cart`, domain-specific layout classes live in CSS Modules instead of broad global selectors.
 
 That means:
 
@@ -230,42 +256,81 @@ That means:
 - domain-specific selectors stay scoped
 - the repo is safer if one remote is later rendered without an iframe
 
-## Day 19-21 Highlights
+## Problems Faced And How They Were Handled
 
-### Day 19: remote outage drill
+### Cross-framework composition pressure
 
-Use this host route to simulate a cart outage:
+- problem: `shell` is `Next.js` while `profile` is `Nuxt`, so forcing bundler-level federation too early would add noise before the core boundary lessons were clear
+- response: use route-level runtime composition first, then keep `profile` independently runnable on its own origin
 
-```text
-http://localhost:3000/cart?simulate=cart-outage
-```
+### Remote outage resilience
 
-What happens:
+- problem: a remote failure should not take down the whole portal
+- response: the shell uses timeout-based fallback UI, a route-level outage drill, and host-side error boundaries
 
-- the shell points the cart iframe to an unavailable origin
-- the cart surface times out
-- the shell shows fallback UI instead of crashing
-- the rest of the portal remains usable
+### Style leakage risk
 
-### Day 20: style conflict prevention
+- problem: even with `iframe` isolation, broad selectors inside remotes make future composition changes riskier
+- response: move domain-specific layout classes into CSS Modules and keep shared primitives in `@commerce/shared-ui`
 
-- `products` page and catalog styles use CSS Modules
-- `cart` runtime view uses CSS Modules
-- shared primitives remain in `@commerce/shared-ui`
+### Boundary drift
 
-### Day 21: explicit boundary checks
+- problem: architecture rules become documentation-only unless the repo can enforce them
+- response: add `npm run check:boundaries` to fail fast when one app imports source from another app directly
 
-Run:
+### Contract drift
 
-```bash
-npm run check:boundaries
-```
+- problem: hardcoded event strings and payload assumptions create silent coupling
+- response: centralize event names, payload types, envelopes, and guards in `@commerce/shared-types`, then add node-based integration checks around that flow
 
-This verifies that one app is not importing source code directly from another app.
+## Shared Package Versioning Note
+
+Right now the shared packages live inside one workspace and move in lockstep with the apps.
+
+That is fine for a learning repo, but a production setup would usually add stronger versioning discipline such as:
+
+- explicit semver for `shared-types` and `shared-ui`
+- contract change notes for any event or payload updates
+- compatibility rules for host and remotes during rolling deployments
+- CI checks that block breaking shared-contract changes unless all dependent apps are updated
+
+## Day 22-25 Highlights
+
+### Day 22: smoke tests
+
+- added lightweight Node-based smoke coverage for app scripts, route entrypoints, and shared package surfaces
+- kept the tests lightweight so they reinforce architecture without dragging in a full browser stack too early
+
+### Day 23: integration tests
+
+- added contract-level integration checks for typed envelopes
+- verified the `products -> shell -> cart` flow through shared contracts and shell runtime helpers
+- verified route builders and auth handoff envelopes stay aligned with shared event names
+
+### Day 24: build and validation workflow
+
+- added root scripts for `test`, `test:smoke`, `test:integration`, and `validate`
+- updated the Nuxt wrapper so `profile` build and type tooling run more reliably in this workspace
+- kept per-app build scripts as first-class commands for independent module ownership
+
+### Day 25: production-thinking documentation
+
+- documented why micro frontend makes sense here
+- documented the main problems already encountered and the trade-offs behind the current composition strategy
+- added a clear “what I would do differently in production” section instead of pretending the demo is already production-perfect
+
+## What I Would Do Differently In A Production Setup
+
+- move from `iframe`-first composition to a more deliberate runtime integration strategy once framework and hosting constraints are clear
+- add real observability: remote load metrics, structured error reporting, and correlation across host and remotes
+- version `shared-types` and `shared-ui` as publishable contracts instead of workspace-only packages
+- add browser-driven integration or E2E checks for route loading, deep links, badge updates, and fallback UX
+- introduce remote manifests, caching policy, and deployment metadata so host and remotes can roll out independently with safer compatibility checks
+- tighten auth, session, and permission boundaries instead of relying on a lightweight demo handoff
 
 ## Current Status
 
-Completed through Day 21:
+Completed through Day 25:
 
 - shell + 3 remotes created
 - typed contracts in `shared-types`
@@ -277,15 +342,17 @@ Completed through Day 21:
 - shell-side fallback UI and error boundaries
 - simulated cart remote outage flow
 - CSS Module scoping for domain-specific styles in `products` and `cart`
-- README architecture and boundary documentation
+- README architecture, production notes, and boundary documentation
 - import boundary check script
+- node-based smoke tests and integration tests
+- root validation workflow for tests + boundaries + independent builds
 
 Next likely steps:
 
-- smoke tests per app
-- host integration tests
-- screenshots or GIF demo
-- production-thinking notes and CV bullets
+- screenshots or GIF demo for the portfolio README
+- browser-driven route verification and badge-update E2E coverage
+- CV bullets and a STAR interview story
+- a future experiment with real Module Federation once the cross-framework constraints are intentionally chosen
 
 ## Nuxt Remote Note
 

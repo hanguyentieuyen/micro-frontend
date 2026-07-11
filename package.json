@@ -22,7 +22,11 @@
     "typecheck:products": "npm run typecheck --workspace @commerce/products",
     "typecheck:cart": "npm run typecheck --workspace @commerce/cart",
     "typecheck:profile": "npm run typecheck --workspace @commerce/profile",
-    "check:boundaries": "node ./scripts/check-boundaries.mjs"
+    "check:boundaries": "node ./scripts/check-boundaries.mjs",
+    "test:smoke": "node tests/smoke/app-entrypoints.test.cjs",
+    "test:integration": "node tests/integration/runtime-composition.test.cjs",
+    "test": "npm run test:smoke && npm run test:integration",
+    "validate": "npm run test && npm run check:boundaries && npm run build:shell && npm run build:products && npm run build:cart && npm run build:profile"
   },
   "engines": {
     "node": ">=20.0.0"
