@@ -1,0 +1,28 @@
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.productCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.productCardMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ui-muted);
+}
+
+.productCardPrice {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.productCardButton {
+  align-self: flex-start;
+}

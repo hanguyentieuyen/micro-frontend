@@ -21,7 +21,8 @@
     "typecheck:shell": "npm run typecheck --workspace @commerce/shell",
     "typecheck:products": "npm run typecheck --workspace @commerce/products",
     "typecheck:cart": "npm run typecheck --workspace @commerce/cart",
-    "typecheck:profile": "npm run typecheck --workspace @commerce/profile"
+    "typecheck:profile": "npm run typecheck --workspace @commerce/profile",
+    "check:boundaries": "node ./scripts/check-boundaries.mjs"
   },
   "engines": {
     "node": ">=20.0.0"

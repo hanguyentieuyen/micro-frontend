@@ -10,6 +10,8 @@ import {
 } from '../lib/cart-event-contract';
 import { emitCartItemAddedToShell, isEmbeddedInShell } from '../lib/runtime-bridge';
 
+import styles from './products-catalog.module.css';
+
 type SentCartEvent = MicroAppEventEnvelope<typeof cartItemAddedEventName>;
 
 function formatPrice(price: number) {
@@ -28,16 +30,16 @@ function ProductCard({
   onAdd: (product: Product) => void;
 }) {
   return (
-    <article className="ui-card product-card">
-      <div className="product-card__meta">
+    <article className={`ui-card ${styles.productCard}`}>
+      <div className={styles.productCardMeta}>
         <span>{product.category}</span>
         <span>{product.rating.toFixed(1)} / 5</span>
       </div>
       <h3>{product.name}</h3>
-      <p className="product-card__price">{formatPrice(product.price)}</p>
+      <p className={styles.productCardPrice}>{formatPrice(product.price)}</p>
       <button
         type="button"
-        className="ui-button ui-button--primary product-card__button"
+        className={`ui-button ui-button--primary ${styles.productCardButton}`}
         onClick={() => onAdd(product)}
       >
         Add to cart
@@ -66,7 +68,7 @@ export function ProductsCatalog({ products }: { products: Product[] }) {
 
   return (
     <div className="ui-stack-md">
-      <div className="product-grid">
+      <div className={styles.productGrid}>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} onAdd={handleAdd} />
         ))}
@@ -74,8 +76,8 @@ export function ProductsCatalog({ products }: { products: Product[] }) {
 
       <aside className="ui-section ui-stack-md">
         <div>
-          <p className="ui-eyebrow">Day 16 / Event producer</p>
-          <h3>Products emits a typed event instead of mutating cart directly.</h3>
+          <p className="ui-eyebrow">Day 20 / Event producer</p>
+          <h3>Products emits a typed event and keeps domain styling module-scoped.</h3>
         </div>
 
         <p className="ui-copy">{statusMessage}</p>

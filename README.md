@@ -1,28 +1,23 @@
 # Commerce Portal Micro Frontend
 
-This repository is a micro frontend learning demo built around a `monorepo + domain boundaries + runtime composition mindset`.
+A learning-focused micro frontend demo built with a `monorepo + domain boundaries + runtime composition` mindset.
 
-The project uses:
+## What This Repository Demonstrates
 
-- `Next.js` for `shell`, `products`, and `cart`
-- `Nuxt 3` for `profile`
-- `TypeScript` for shared contracts
-- `npm workspaces` for monorepo management
-
-The main goal of this repo is to learn the core ideas behind micro frontends:
-
-- split by `business domain`
-- separate `ownership` across apps
-- keep the `shell` focused on orchestration
-- prepare for `runtime composition` and cross-app communication through event contracts
+- a single `shell` as the user entrypoint
+- independently runnable frontend domains
+- cross-app communication through typed contracts
+- runtime composition between `Next.js` and `Nuxt`
+- remote failure isolation and fallback behavior
+- style isolation through `iframe` boundaries plus CSS Modules inside remotes
 
 ## Stack
 
 - Node.js: `>= 20`
 - Package manager: `npm`
 - Monorepo: `npm workspaces`
-- Host app: `Next.js 16`
-- Remote apps:
+- Shell: `Next.js 16`
+- Remotes:
   - `products`: `Next.js 16`
   - `cart`: `Next.js 16`
   - `profile`: `Nuxt 3.12.4`
@@ -34,192 +29,78 @@ The main goal of this repo is to learn the core ideas behind micro frontends:
 
 ```text
 apps/
-  shell/         # host app, layout, top nav, route orchestration
+  shell/         # host app, layout, nav, runtime orchestration
   products/      # products domain
   cart/          # cart domain
   profile/       # profile domain (Nuxt)
 packages/
-  shared-types/  # shared cross-app contracts
-  shared-ui/     # shared UI primitives
+  shared-types/  # typed cross-app contracts
+  shared-ui/     # shared tokens and UI primitives
+scripts/
+  check-boundaries.mjs
 ```
 
 ## Installation
-
-Requirements:
-
-- `Node.js >= 20`
-- `npm >= 10` is the safest choice for the current workspace setup
-
-Install dependencies from the repository root:
 
 ```bash
 npm install
 ```
 
-## Running Each App
-
-### 1. Run the shell
+## Run The Apps
 
 ```bash
 npm run dev:shell
-```
-
-- URL: `http://localhost:3000`
-- Role: the main user entrypoint, responsible for layout, top navigation, and route skeletons
-
-### 2. Run products
-
-```bash
 npm run dev:products
-```
-
-- URL: `http://localhost:3001`
-- Role: the catalog domain, rendering a mock product list
-
-### 3. Run cart
-
-```bash
 npm run dev:cart
-```
-
-- URL: `http://localhost:3002`
-- Role: the cart domain, rendering badge state, line items, and a mock subtotal
-
-### 4. Run profile
-
-```bash
 npm run dev:profile
 ```
 
-- URL: `http://localhost:3003`
-- Role: the user account domain built with `Nuxt`
+Runtime URLs:
 
-Notes:
+- shell: `http://localhost:3000`
+- products: `http://localhost:3001`
+- cart: `http://localhost:3002`
+- profile: `http://localhost:3003`
 
-- Run each app in a separate terminal if you want them active at the same time.
-- `npm run dev` at the root currently starts only the `shell`.
-
-## Build And Typecheck
-
-Build each app:
+## Build And Validation
 
 ```bash
 npm run build:shell
 npm run build:products
 npm run build:cart
 npm run build:profile
-```
 
-Build the whole workspace:
-
-```bash
-npm run build
-```
-
-Typecheck per app:
-
-```bash
 npm run typecheck:shell
 npm run typecheck:products
 npm run typecheck:cart
-npm run typecheck:profile
+npm run check:boundaries
 ```
 
-Current note:
+Notes:
 
 - `shell`, `products`, and `cart` typecheck successfully.
-- `profile` currently has a Nuxt-generated `.nuxt/types/plugins.d.ts` parsing issue in this workspace, while `npm run build:profile` still passes.
+- `profile` builds successfully in the current workspace setup.
+- `check:boundaries` fails if one app imports code directly from another app.
 
-## Domain Boundaries
+## Runtime Composition Strategy
 
-This is the most important part of the repository.
+This repository currently uses `route-level runtime composition` with `iframe` surfaces.
 
-### Shell
+Why this approach right now:
 
-The `shell` is the only host app that users should enter directly.
+- it keeps each domain independently runnable
+- it works cleanly across `Next.js` and `Nuxt`
+- it makes host vs remote boundaries obvious
+- it lets the project focus on contracts, failure isolation, and communication before moving into bundler-level federation complexity
 
-The shell should keep:
+Current runtime model:
 
-- global layout
-- top navigation
-- route orchestration
-- auth context handoff
-- host-level fallback UI and error boundaries
+- `shell` owns navigation and shell routes such as `/products`, `/cart`, and `/profile`
+- each remote still runs on its own origin
+- the shell maps host routes to remote origins and loads them at runtime
+- cross-app messages use `postMessage` and typed envelopes from `@commerce/shared-types`
 
-The shell should not keep:
-
-- products business rules
-- cart calculation logic
-- profile-specific data management
-
-### Products
-
-`products` should only own:
-
-- product discovery
-- catalog UI
-- product card rendering
-- event trigger points such as `cart:item-added`
-
-`products` should not know about:
-
-- cart subtotal
-- profile state
-- shell layout internals
-
-### Cart
-
-`cart` should only own:
-
-- badge count
-- line items
-- subtotal or cart summary
-- consuming events from other domains through clear contracts
-
-`cart` should not:
-
-- import business logic directly from `products`
-- depend on how the shell renders layout
-
-### Profile
-
-`profile` should only own:
-
-- account overview
-- user information
-- account-specific settings or activity
-
-`profile` should not:
-
-- contain products or cart logic
-- import code directly from another remote
-
-### Shared Packages
-
-`packages/shared-types`
-
-- is the single source of truth for cross-app contracts
-- contains `User`, `Product`, `CartItem`, typed event payloads, `MicroAppEventMap`, and the reusable `MICRO_APP_EVENTS` constant
-
-`packages/shared-ui`
-
-- contains semantic design tokens and framework-agnostic CSS primitives
-- is imported by all apps so each one can still run independently with the same base UI contract
-- should not contain business logic or domain-specific components
-
-### Default Rules
-
-- `remote -> remote direct import`: not allowed
-- `remote -> shared/*`: allowed
-- `remote -> shell`: only through event contracts or a very small host API
-
-## Shared UI Approach
-
-- `@commerce/shared-ui` is intentionally CSS-first so both `Next.js` and `Nuxt` can consume the same primitives without forcing shared framework components too early.
-- The shared package owns semantic tokens such as `--ui-bg`, `--ui-surface`, and `--ui-accent`, plus primitive classes like `ui-section`, `ui-card`, `ui-button`, and `ui-copy`.
-- Each app keeps its own visual identity by overriding the semantic `--ui-*` tokens in local global CSS while leaving domain-specific layouts inside the domain app.
-
-## Overall Architecture
+## Architecture
 
 ### Mental Model
 
@@ -232,6 +113,7 @@ Shell App (Next.js)
   - navigation
   - route orchestration
   - auth handoff
+  - fallback UI
   |
   +--> Products Remote (Next.js)
   +--> Cart Remote (Next.js)
@@ -240,10 +122,14 @@ Shell App (Next.js)
 Shared layer:
   - @commerce/shared-types
   - @commerce/shared-ui
+```
 
-Event contracts:
-  - products -> cart: cart:item-added
-  - shell -> remotes: auth:user-changed
+### Event Flow
+
+```text
+products -> shell: cart:item-added
+shell -> cart: shell:cart-state-sync
+shell -> remotes: auth:user-changed
 ```
 
 ### Mermaid Diagram
@@ -264,40 +150,143 @@ graph TD
     C --> UI
     R --> UI
 
-    P -. cart:item-added .-> C
+    P -. cart:item-added .-> S
+    S -. shell:cart-state-sync .-> C
     S -. auth:user-changed .-> P
     S -. auth:user-changed .-> C
     S -. auth:user-changed .-> R
 ```
 
-## Current Repository Status
+## Boundaries And Communication Rules
 
-Already in place:
+### Shell owns
 
-- monorepo structure with `apps/*` and `packages/*`
-- `shell` built with `Next.js`
-- `products` built with `Next.js`
-- `cart` built with `Next.js`
-- `profile` built with `Nuxt`
-- `shared-types` with typed cross-app contracts and reusable event-name constants
-- `shared-ui` with semantic tokens and reusable CSS primitives adopted by all apps
+- layout
+- top navigation
+- route orchestration
+- auth context handoff
+- host-level fallback UI
+- host-side error boundaries
+- cart snapshot storage at the shell boundary
 
-Not finished yet:
+### Products owns
 
-- real runtime composition between host and remotes
-- lazy loading for remotes
-- real event-driven communication between `products` and `cart`
-- complete error isolation and fallback UI
-- smoke tests and integration tests
+- product discovery
+- product cards
+- the `cart:item-added` producer contract
 
-In short: the repo already has the right boundaries and skeleton, and the next step is to connect the apps using proper micro frontend patterns.
+### Cart owns
+
+- cart presentation
+- line items
+- subtotal and count rendering
+- consuming shell-synced cart snapshots
+
+### Profile owns
+
+- account overview
+- profile pages and settings
+- consuming shell auth context
+
+### Shared packages own
+
+`@commerce/shared-types`
+
+- `User`
+- `Product`
+- `CartItem`
+- event payloads
+- runtime envelopes
+- message names and event names
+
+`@commerce/shared-ui`
+
+- design tokens
+- shared primitives such as `ui-section`, `ui-card`, `ui-button`, and `ui-copy`
+- framework-agnostic CSS only
+
+### Rules
+
+- `remote -> remote direct import`: not allowed
+- `remote -> shared/*`: allowed
+- `remote -> shell`: only through event contracts or a very small host API surface
+- `shell -> remote business code`: not used in the current route-level composition strategy
+
+## Style Isolation Strategy
+
+There are two style boundaries in the current setup.
+
+### 1. Runtime boundary
+
+Each remote is loaded through an `iframe`, so styles from one remote do not leak into another remote at runtime.
+
+### 2. Domain boundary
+
+Inside `products` and `cart`, domain-specific layout classes now live in CSS Modules instead of broad global selectors.
+
+That means:
+
+- shared tokens stay global and reusable
+- domain-specific selectors stay scoped
+- the repo is safer if one remote is later rendered without an iframe
+
+## Day 19-21 Highlights
+
+### Day 19: remote outage drill
+
+Use this host route to simulate a cart outage:
+
+```text
+http://localhost:3000/cart?simulate=cart-outage
+```
+
+What happens:
+
+- the shell points the cart iframe to an unavailable origin
+- the cart surface times out
+- the shell shows fallback UI instead of crashing
+- the rest of the portal remains usable
+
+### Day 20: style conflict prevention
+
+- `products` page and catalog styles use CSS Modules
+- `cart` runtime view uses CSS Modules
+- shared primitives remain in `@commerce/shared-ui`
+
+### Day 21: explicit boundary checks
+
+Run:
+
+```bash
+npm run check:boundaries
+```
+
+This verifies that one app is not importing source code directly from another app.
+
+## Current Status
+
+Completed through Day 21:
+
+- shell + 3 remotes created
+- typed contracts in `shared-types`
+- shared primitives in `shared-ui`
+- route-level runtime composition in the shell
+- typed products-to-shell event flow
+- shell-to-cart snapshot sync
+- lazy loading for remote surfaces
+- shell-side fallback UI and error boundaries
+- simulated cart remote outage flow
+- CSS Module scoping for domain-specific styles in `products` and `cart`
+- README architecture and boundary documentation
+- import boundary check script
+
+Next likely steps:
+
+- smoke tests per app
+- host integration tests
+- screenshots or GIF demo
+- production-thinking notes and CV bullets
 
 ## Nuxt Remote Note
 
-`apps/profile` is currently pinned to `Nuxt 3.12.4` for better stability with the current Node environment.
-
-The repo also includes:
-
-- `apps/profile/scripts/run-nuxi.mjs`
-
-This script helps run `nuxi` more reliably in the current workspace setup.
+`apps/profile` stays pinned to `Nuxt 3.12.4` in this workspace for stability with the current local environment.

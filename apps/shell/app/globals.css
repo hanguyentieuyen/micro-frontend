@@ -234,6 +234,12 @@ ul {
   color: #9a3412;
 }
 
+.remote-pill--danger {
+  border-color: rgba(185, 28, 28, 0.24);
+  background: rgba(185, 28, 28, 0.12);
+  color: #b91c1c;
+}
+
 .remote-frame-shell {
   position: relative;
   min-height: 960px;

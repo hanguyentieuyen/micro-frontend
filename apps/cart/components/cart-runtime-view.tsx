@@ -16,6 +16,8 @@ import {
 } from '../lib/cart-event-contract';
 import { mockCartItems, mockCartProducts } from '../lib/mock-cart';
 
+import styles from './cart-runtime-view.module.css';
+
 const productMap = new Map(mockCartProducts.map((product) => [product.id, product]));
 
 function formatPrice(price: number) {
@@ -60,12 +62,12 @@ function resolveLineItem(item: CartItem) {
 
 function CartLine({ product, quantity, lineTotal }: { product: Product; quantity: number; lineTotal: number }) {
   return (
-    <article className="cart-line">
+    <article className={styles.cartLine}>
       <div>
-        <p className="cart-line__category">{product.category}</p>
+        <p className={styles.cartLineCategory}>{product.category}</p>
         <h3>{product.name}</h3>
       </div>
-      <div className="cart-line__meta">
+      <div className={styles.cartLineMeta}>
         <span>Qty {quantity}</span>
         <strong>{formatPrice(lineTotal)}</strong>
       </div>
@@ -115,23 +117,23 @@ export function CartRuntimeView() {
   const subtotal = resolvedItems.reduce((total, item) => total + item.lineTotal, 0);
 
   return (
-    <main className="ui-container cart-page">
-      <section className="ui-section cart-hero">
+    <main className={`ui-container ${styles.cartPage}`}>
+      <section className={`ui-section ${styles.cartHero}`}>
         <div className="ui-stack-md">
-          <p className="ui-eyebrow">Week 3 / Day 16</p>
-          <h1>Cart now consumes shell-synced state instead of guessing product actions.</h1>
+          <p className="ui-eyebrow">Week 3 / Days 20-21</p>
+          <h1>Cart now consumes shell-synced state with module-scoped layout classes.</h1>
           <p className="ui-copy">
             This remote stays focused on cart data, line items, and totals. In shell mode it listens for <code>{shellCartStateSyncMessageName}</code> and renders state produced from the typed <code>{cartItemAddedEventName}</code> flow.
           </p>
         </div>
 
-        <div className="badge-panel">
-          <span className="badge-panel__count">{itemCount}</span>
-          <span className="badge-panel__label">items currently in cart</span>
+        <div className={styles.badgePanel}>
+          <span className={styles.badgePanelCount}>{itemCount}</span>
+          <span className={styles.badgePanelLabel}>items currently in cart</span>
         </div>
       </section>
 
-      <section className="cart-grid">
+      <section className={styles.cartGrid}>
         <section className="ui-section ui-stack-md">
           <div>
             <p className="ui-eyebrow">Cart items</p>
@@ -139,7 +141,7 @@ export function CartRuntimeView() {
           </div>
 
           {resolvedItems.length > 0 ? (
-            <div className="cart-lines">
+            <div className={styles.cartLines}>
               {resolvedItems.map((item) => (
                 <CartLine key={item.product.id} {...item} />
               ))}
@@ -153,12 +155,12 @@ export function CartRuntimeView() {
           )}
         </section>
 
-        <aside className="ui-section ui-stack-md summary-panel">
+        <aside className={`ui-section ui-stack-md ${styles.summaryPanel}`}>
           <div>
             <p className="ui-eyebrow">Summary</p>
             <h2>{formatPrice(subtotal)}</h2>
           </div>
-          <ul className="summary-list">
+          <ul className={styles.summaryList}>
             <li>
               <span>Line items</span>
               <strong>{resolvedItems.length}</strong>
@@ -172,13 +174,13 @@ export function CartRuntimeView() {
               <strong>{formatTimestamp(lastSync?.updatedAt ?? null)}</strong>
             </li>
           </ul>
-          <button type="button" className="ui-button ui-button--primary summary-button">Proceed to checkout</button>
+          <button type="button" className={`ui-button ui-button--primary ${styles.summaryButton}`}>Proceed to checkout</button>
         </aside>
       </section>
 
       <section className="ui-section ui-stack-md">
         <div>
-          <p className="ui-eyebrow">Day 16 / Consumer contract</p>
+          <p className="ui-eyebrow">Day 20 / Consumer contract</p>
           <h2>Cart knows both the event language and the shell sync message.</h2>
         </div>
         <div className="ui-card ui-stack-sm">

@@ -1,0 +1,88 @@
+.cartPage {
+  padding: 2rem 0 3rem;
+}
+
+.cartHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.75fr);
+  gap: 1.2rem;
+}
+
+.badgePanel {
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--ui-radius-card) - 2px);
+  background: linear-gradient(160deg, var(--ui-accent-soft), rgba(255, 255, 255, 0.95));
+}
+
+.badgePanelCount {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-weight: 700;
+  color: var(--ui-accent);
+}
+
+.badgePanelLabel {
+  color: var(--ui-muted);
+}
+
+.cartGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.85fr);
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.cartLines {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.cartLine {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.1rem;
+  border-radius: var(--ui-radius-soft);
+  background: var(--ui-surface-strong);
+  border: 1px solid rgba(194, 65, 12, 0.12);
+}
+
+.cartLineCategory {
+  color: var(--ui-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.cartLineMeta {
+  display: grid;
+  justify-items: end;
+  gap: 0.35rem;
+}
+
+.summaryPanel {
+  align-self: start;
+}
+
+.summaryList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.summaryList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--ui-muted);
+}
+
+.summaryButton {
+  align-self: flex-start;
+}
+
+@media (max-width: 860px) {
+  .cartHero,
+  .cartGrid {
+    grid-template-columns: 1fr;
+  }
+}

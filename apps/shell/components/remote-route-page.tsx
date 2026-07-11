@@ -4,24 +4,29 @@ import { buildRemoteRoute, buildShellRoute, getRemoteApp, type RemoteAppId } fro
 import { RemoteErrorBoundary } from './remote-error-boundary';
 import { RemoteSurface } from './remote-surface';
 
+type RouteSearchParams = Record<string, string | string[] | undefined>;
+
 type RemoteRoutePageProps = {
   remoteId: RemoteAppId;
   segments?: string[];
+  searchParams?: RouteSearchParams;
 };
 
-export function RemoteRoutePage({ remoteId, segments = [] }: RemoteRoutePageProps) {
+export function RemoteRoutePage({ remoteId, segments = [], searchParams = {} }: RemoteRoutePageProps) {
   const remote = getRemoteApp(remoteId);
   const shellRoute = buildShellRoute(remoteId, segments);
   const remoteRoute = buildRemoteRoute(remoteId, segments);
   const nestedPathLabel = segments.length === 0 ? '/' : `/${segments.join('/')}`;
+  const cartOutageHref = `${shellRoute}?simulate=cart-outage`;
+  const simulationMode = typeof searchParams.simulate === 'string' ? searchParams.simulate : undefined;
 
   return (
     <div className="stack-xl">
       <section className="ui-section ui-stack-md">
-        <p className="ui-eyebrow">Week 3 / Days 16-18</p>
-        <h2>{remote.label} is now mounted with lazy load, typed sync, and fallback behavior.</h2>
+        <p className="ui-eyebrow">Week 3 / Days 19-21</p>
+        <h2>{remote.label} is now mounted with lazy load, typed sync, fallback drills, and clearer boundaries.</h2>
         <p className="ui-copy">
-          {remote.description} The shell route <code>{shellRoute}</code> keeps host navigation outside the remote while adding three production-minded layers: typed event contracts, deferred loading, and shell-side resilience.
+          {remote.description} The shell route <code>{shellRoute}</code> keeps host navigation outside the remote while adding four production-minded layers: typed event contracts, deferred loading, outage simulation, and shell-side resilience.
         </p>
 
         <div className="remote-facts">
@@ -30,6 +35,12 @@ export function RemoteRoutePage({ remoteId, segments = [] }: RemoteRoutePageProp
           <span className="remote-pill">Framework {remote.framework}</span>
         </div>
 
+        {remoteId === 'cart' ? (
+          <p className="ui-copy remote-inline-copy">
+            Day 19 drill: <Link href={cartOutageHref}>{cartOutageHref}</Link> simulates a cart remote outage so you can confirm the host fallback without stopping servers manually.
+          </p>
+        ) : null}
+
         {remote.nestedExamplePath ? (
           <p className="ui-copy remote-inline-copy">
             Deep link still works through the host: <Link href={remote.nestedExamplePath}>{remote.nestedExamplePath}</Link>
@@ -37,7 +48,7 @@ export function RemoteRoutePage({ remoteId, segments = [] }: RemoteRoutePageProp
         ) : null}
       </section>
 
-      <RemoteErrorBoundary remoteLabel={remote.label} resetKey={remoteRoute}>
+      <RemoteErrorBoundary remoteLabel={remote.label} resetKey={`${remoteRoute}-${simulationMode ?? 'healthy'}`}>
         <RemoteSurface
           remoteId={remoteId}
           title={`${remote.label} remote`}
@@ -47,6 +58,8 @@ export function RemoteRoutePage({ remoteId, segments = [] }: RemoteRoutePageProp
           routeLabel={`Remote path ${nestedPathLabel}`}
           src={remoteRoute}
           devCommand={remote.devCommand}
+          simulationMode={simulationMode}
+          recoveryHref={shellRoute}
         />
       </RemoteErrorBoundary>
     </div>

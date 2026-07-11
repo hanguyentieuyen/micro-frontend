@@ -23,7 +23,12 @@ type RemoteSurfaceProps = {
   routeLabel: string;
   src: string;
   devCommand: string;
+  simulationMode?: string;
+  recoveryHref: string;
 };
+
+const CART_OUTAGE_SIMULATION_ORIGIN = 'http://localhost:3998';
+const CART_OUTAGE_SIMULATION = 'cart-outage';
 
 export function RemoteSurface({
   remoteId,
@@ -34,6 +39,8 @@ export function RemoteSurface({
   routeLabel,
   src,
   devCommand,
+  simulationMode,
+  recoveryHref,
 }: RemoteSurfaceProps) {
   const frameRef = useRef<HTMLIFrameElement | null>(null);
   const surfaceRef = useRef<HTMLElement | null>(null);
@@ -42,11 +49,17 @@ export function RemoteSurface({
   const [hasTimedOut, setHasTimedOut] = useState(false);
   const [retryKey, setRetryKey] = useState(0);
 
+  const isSimulatedCartOutage = remoteId === 'cart' && simulationMode === CART_OUTAGE_SIMULATION;
+  const activeOrigin = isSimulatedCartOutage ? CART_OUTAGE_SIMULATION_ORIGIN : origin;
+  const activeSrc = isSimulatedCartOutage
+    ? `${CART_OUTAGE_SIMULATION_ORIGIN}/__simulated-cart-outage__`
+    : src;
+
   useEffect(() => {
     setShouldLoad(false);
     setIsLoaded(false);
     setHasTimedOut(false);
-  }, [src]);
+  }, [activeSrc]);
 
   useEffect(() => {
     const node = surfaceRef.current;
@@ -73,7 +86,7 @@ export function RemoteSurface({
     return () => {
       observer.disconnect();
     };
-  }, [src, retryKey]);
+  }, [activeSrc, retryKey]);
 
   function postAuthSync() {
     if (!frameRef.current?.contentWindow) {
@@ -83,7 +96,7 @@ export function RemoteSurface({
     postMessageToFrame(
       frameRef.current.contentWindow,
       buildShellAuthEventEnvelope(authUserChangedPreview),
-      origin,
+      activeOrigin,
     );
   }
 
@@ -97,7 +110,7 @@ export function RemoteSurface({
     postMessageToFrame(
       frameRef.current.contentWindow,
       buildShellCartStateSyncEnvelope(payload),
-      origin,
+      activeOrigin,
     );
   }
 
@@ -115,14 +128,16 @@ export function RemoteSurface({
       setHasTimedOut(true);
       console.error('[shell] remote surface timed out before load', {
         remoteId,
-        src,
+        src: activeSrc,
+        activeOrigin,
+        simulatedFailure: isSimulatedCartOutage,
       });
     }, 6000);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isLoaded, remoteId, shouldLoad, src, retryKey]);
+  }, [activeOrigin, activeSrc, isLoaded, isSimulatedCartOutage, remoteId, shouldLoad, retryKey]);
 
   useEffect(() => {
     if (remoteId !== 'cart') {
@@ -149,7 +164,7 @@ export function RemoteSurface({
         handleCartStateChanged as EventListener,
       );
     };
-  }, [isLoaded, origin, remoteId]);
+  }, [activeOrigin, isLoaded, remoteId]);
 
   function handleRetry() {
     setHasTimedOut(false);
@@ -175,6 +190,14 @@ export function RemoteSurface({
         ? 'Loading'
         : 'Waiting to lazy load';
 
+  const fallbackTitle = isSimulatedCartOutage
+    ? 'The cart outage is intentionally simulated and the shell is still usable.'
+    : 'The shell stayed alive even though this remote did not respond in time.';
+
+  const fallbackCopy = isSimulatedCartOutage
+    ? 'Day 19 proves the host can keep working while the cart remote is unavailable. Remove the simulation from the URL or open the healthy standalone app to recover.'
+    : `Retry the surface, open the standalone app directly, or continue using another route in the shell. If you are running locally, confirm ${devCommand} is healthy.`;
+
   return (
     <section ref={surfaceRef} className="ui-section remote-surface ui-stack-md">
       <div className="remote-toolbar">
@@ -188,7 +211,7 @@ export function RemoteSurface({
           <a className="ui-button ui-button--ghost" href={origin} target="_blank" rel="noreferrer">
             Open standalone app
           </a>
-          <a className="ui-button ui-button--primary" href={src} target="_blank" rel="noreferrer">
+          <a className="ui-button ui-button--primary" href={activeSrc} target="_blank" rel="noreferrer">
             Open current remote route
           </a>
         </div>
@@ -197,7 +220,10 @@ export function RemoteSurface({
       <div className="remote-facts">
         <span className="remote-pill">{framework}</span>
         <span className="remote-pill">{routeLabel}</span>
-        <span className="remote-pill">{origin}</span>
+        <span className="remote-pill">Healthy origin {origin}</span>
+        {isSimulatedCartOutage ? (
+          <span className="remote-pill remote-pill--danger">Simulated outage {activeOrigin}</span>
+        ) : null}
         <span className={hasTimedOut ? 'remote-pill remote-pill--warning' : isLoaded ? 'remote-pill remote-pill--success' : 'remote-pill'}>
           {loadStatus}
         </span>
@@ -228,16 +254,19 @@ export function RemoteSurface({
         {shouldLoad && hasTimedOut && !isLoaded ? (
           <div className="remote-frame-shell__fallback ui-stack-md">
             <div>
-              <p className="ui-eyebrow">Day 18 / Fallback UI</p>
-              <h4>The shell stayed alive even though this remote did not respond in time.</h4>
+              <p className="ui-eyebrow">Day 19 / Remote outage drill</p>
+              <h4>{fallbackTitle}</h4>
             </div>
-            <p className="ui-copy">
-              Retry the surface, open the standalone app directly, or continue using another route in the shell. This is the resilience boundary for a failing remote.
-            </p>
+            <p className="ui-copy">{fallbackCopy}</p>
             <div className="remote-frame-shell__actions">
               <button type="button" className="ui-button ui-button--primary" onClick={handleRetry}>
                 Retry remote load
               </button>
+              {isSimulatedCartOutage ? (
+                <a className="ui-button ui-button--ghost" href={recoveryHref}>
+                  Return to healthy shell route
+                </a>
+              ) : null}
               <a className="ui-button ui-button--ghost" href={origin} target="_blank" rel="noreferrer">
                 Open standalone app
               </a>
@@ -248,9 +277,9 @@ export function RemoteSurface({
         {shouldLoad ? (
           <iframe
             ref={frameRef}
-            key={`${retryKey}-${src}`}
+            key={`${retryKey}-${activeSrc}`}
             title={title}
-            src={src}
+            src={activeSrc}
             loading="lazy"
             className={isLoaded ? 'remote-frame remote-frame--visible' : 'remote-frame'}
             onLoad={handleFrameLoad}

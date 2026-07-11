@@ -1,5 +1,13 @@
 import { RemoteRoutePage } from '../../components/remote-route-page';
 
-export default function ProductsPage() {
-  return <RemoteRoutePage remoteId="products" />;
+type RouteSearchParams = Record<string, string | string[] | undefined>;
+
+type ProductsPageProps = {
+  searchParams?: Promise<RouteSearchParams>;
+};
+
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+
+  return <RemoteRoutePage remoteId="products" searchParams={resolvedSearchParams} />;
 }
