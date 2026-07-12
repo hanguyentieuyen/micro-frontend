@@ -5,5 +5,9 @@
   "main": "index.ts",
   "types": "index.ts",
   "style": "styles.css",
-  "description": "Shared UI primitives for the commerce portal."
+  "description": "Shared UI primitives for the commerce portal.",
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
 }

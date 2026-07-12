@@ -5,10 +5,10 @@ export const authUserChangedEventName = MICRO_APP_EVENTS['auth:user-changed'];
 export type AuthUserChangedContract = MicroAppEventMap[typeof authUserChangedEventName];
 
 export const mockShellUser: User = {
-  id: 'u-shell-01',
-  name: 'Mina Carter',
-  email: 'mina@commerce-portal.dev',
-  role: 'customer',
+  id: 'u-buyer-01',
+  name: 'Avery Nguyen',
+  email: 'avery@northgrid.io',
+  role: 'admin',
 };
 
 export function buildAuthUserChangedPayload(user: Pick<User, 'id'>): AuthUserChangedContract {

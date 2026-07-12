@@ -37,7 +37,7 @@ runChecks('integration', [
   }],
   ['products -> shell -> cart add-to-cart flow stays contract compatible', () => {
     const payload = {
-      productId: 'p-canvas-weekender',
+      productId: 'p-edge-gateway-x4',
       quantity: 2,
     };
 
@@ -75,11 +75,11 @@ runChecks('integration', [
     assert.equal(shellRemotes.getRemoteApp('profile').framework, 'Nuxt 3');
   }],
   ['shell auth handoff reuses the shared event name instead of hardcoded strings', () => {
-    const authEnvelope = shellRuntimeBridge.buildShellAuthEventEnvelope({ userId: 'u-01' });
+    const authEnvelope = shellRuntimeBridge.buildShellAuthEventEnvelope({ userId: 'u-buyer-01' });
 
     assert.equal(authEnvelope.kind, sharedTypes.MICRO_APP_EVENT_ENVELOPE_KIND);
     assert.equal(authEnvelope.sourceApp, 'shell');
     assert.equal(authEnvelope.eventName, sharedTypes.MICRO_APP_EVENTS['auth:user-changed']);
-    assert.deepEqual(authEnvelope.payload, { userId: 'u-01' });
+    assert.deepEqual(authEnvelope.payload, { userId: 'u-buyer-01' });
   }],
 ]);

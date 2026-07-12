@@ -1,3 +1,5 @@
+import { Badge, Card, CardHeader, SectionHeading, buttonVariants } from '@commerce/shared-ui';
+
 import Link from 'next/link';
 
 import { buildRemoteRoute, buildShellRoute, getRemoteApp, type RemoteAppId } from '../lib/remotes';
@@ -21,37 +23,49 @@ export function RemoteRoutePage({ remoteId, segments = [], searchParams = {} }: 
   const simulationMode = typeof searchParams.simulate === 'string' ? searchParams.simulate : undefined;
 
   return (
-    <div className="stack-xl">
-      <section className="ui-section ui-stack-md">
-        <p className="ui-eyebrow">Week 3 / Days 19-21</p>
-        <h2>{remote.label} is now mounted with lazy load, typed sync, fallback drills, and clearer boundaries.</h2>
-        <p className="ui-copy">
-          {remote.description} The shell route <code>{shellRoute}</code> keeps host navigation outside the remote while adding four production-minded layers: typed event contracts, deferred loading, outage simulation, and shell-side resilience.
-        </p>
+    <div className="space-y-6">
+      <Card className="rounded-[2rem] bg-card/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+        <CardHeader className="space-y-5">
+          <SectionHeading
+            eyebrow="Embedded runtime"
+            title={`${remote.label} stays independently runnable while still mounting inside the shared buyer shell.`}
+            description={`${remote.description} The host route ${shellRoute} keeps navigation, shared context, and recovery UI outside the remote while the domain continues to own its own runtime surface.`}
+          />
 
-        <div className="remote-facts">
-          <span className="remote-pill">Shell route {shellRoute}</span>
-          <span className="remote-pill">Remote path {nestedPathLabel}</span>
-          <span className="remote-pill">Framework {remote.framework}</span>
-        </div>
+          <div className="flex flex-wrap gap-2.5">
+            <Badge variant="subtle">Shell route {shellRoute}</Badge>
+            <Badge variant="subtle">Remote path {nestedPathLabel}</Badge>
+            <Badge variant="info">{remote.framework}</Badge>
+          </div>
 
-        {remoteId === 'cart' ? (
-          <p className="ui-copy remote-inline-copy">
-            Day 19 drill: <Link href={cartOutageHref}>{cartOutageHref}</Link> simulates a cart remote outage so you can confirm the host fallback without stopping servers manually.
-          </p>
-        ) : null}
+          {remoteId === 'cart' ? (
+            <p className="text-sm leading-7 text-muted-foreground">
+              Need to verify resilience? Open{' '}
+              <Link href={cartOutageHref} className="font-medium text-sky-700 underline underline-offset-4">
+                {cartOutageHref}
+              </Link>{' '}
+              to simulate a cart outage while keeping the shell usable.
+            </p>
+          ) : null}
 
-        {remote.nestedExamplePath ? (
-          <p className="ui-copy remote-inline-copy">
-            Deep link still works through the host: <Link href={remote.nestedExamplePath}>{remote.nestedExamplePath}</Link>
-          </p>
-        ) : null}
-      </section>
+          {remote.nestedExamplePath ? (
+            <p className="text-sm leading-7 text-muted-foreground">
+              Deep linking still lands inside the correct remote boundary:{' '}
+              <Link
+                href={remote.nestedExamplePath}
+                className="font-medium text-sky-700 underline underline-offset-4"
+              >
+                {remote.nestedExamplePath}
+              </Link>
+            </p>
+          ) : null}
+        </CardHeader>
+      </Card>
 
       <RemoteErrorBoundary remoteLabel={remote.label} resetKey={`${remoteRoute}-${simulationMode ?? 'healthy'}`}>
         <RemoteSurface
           remoteId={remoteId}
-          title={`${remote.label} remote`}
+          title={`${remote.label} runtime surface`}
           description={remote.description}
           framework={remote.framework}
           origin={remote.standaloneOrigin}
@@ -65,3 +79,4 @@ export function RemoteRoutePage({ remoteId, segments = [], searchParams = {} }: 
     </div>
   );
 }
+

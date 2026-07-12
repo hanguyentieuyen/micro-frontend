@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, buttonVariants, cn } from '@commerce/shared-ui';
 import type { CartStateSnapshot } from '@commerce/shared-types';
 
 import { useEffect, useRef, useState } from 'react';
@@ -43,7 +44,7 @@ export function RemoteSurface({
   recoveryHref,
 }: RemoteSurfaceProps) {
   const frameRef = useRef<HTMLIFrameElement | null>(null);
-  const surfaceRef = useRef<HTMLElement | null>(null);
+  const surfaceRef = useRef<HTMLDivElement | null>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasTimedOut, setHasTimedOut] = useState(false);
@@ -195,101 +196,138 @@ export function RemoteSurface({
     : 'The shell stayed alive even though this remote did not respond in time.';
 
   const fallbackCopy = isSimulatedCartOutage
-    ? 'Day 19 proves the host can keep working while the cart remote is unavailable. Remove the simulation from the URL or open the healthy standalone app to recover.'
-    : `Retry the surface, open the standalone app directly, or continue using another route in the shell. If you are running locally, confirm ${devCommand} is healthy.`;
+    ? 'This drill proves the buyer shell can keep working while the cart remote is unavailable. Remove the simulation from the URL or open the healthy standalone app to recover.'
+    : `Retry the surface, open the standalone app directly, or keep using another route in the shell. If you are running locally, confirm ${devCommand} is healthy.`;
 
   return (
-    <section ref={surfaceRef} className="ui-section remote-surface ui-stack-md">
-      <div className="remote-toolbar">
-        <div className="ui-stack-sm">
-          <p className="ui-eyebrow">Runtime composition surface</p>
-          <h3>{title}</h3>
-          <p className="ui-copy">{description}</p>
-        </div>
-
-        <div className="remote-actions">
-          <a className="ui-button ui-button--ghost" href={origin} target="_blank" rel="noreferrer">
-            Open standalone app
-          </a>
-          <a className="ui-button ui-button--primary" href={activeSrc} target="_blank" rel="noreferrer">
-            Open current remote route
-          </a>
-        </div>
-      </div>
-
-      <div className="remote-facts">
-        <span className="remote-pill">{framework}</span>
-        <span className="remote-pill">{routeLabel}</span>
-        <span className="remote-pill">Healthy origin {origin}</span>
-        {isSimulatedCartOutage ? (
-          <span className="remote-pill remote-pill--danger">Simulated outage {activeOrigin}</span>
-        ) : null}
-        <span className={hasTimedOut ? 'remote-pill remote-pill--warning' : isLoaded ? 'remote-pill remote-pill--success' : 'remote-pill'}>
-          {loadStatus}
-        </span>
-      </div>
-
-      <div className="remote-frame-shell">
-        {!shouldLoad ? (
-          <div className="remote-frame-shell__placeholder ui-stack-md">
-            <div>
-              <p className="ui-eyebrow">Day 17 / Lazy loading</p>
-              <h4>Remote request is deferred until this surface is near the viewport.</h4>
-            </div>
-            <p className="ui-copy">
-              Before Day 17, the iframe requested the remote immediately on route render. Now the host waits until this panel is about to be seen, or until you trigger it manually.
+    <Card
+      ref={surfaceRef}
+      className="rounded-[2rem] bg-card/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)]"
+    >
+      <CardHeader className="space-y-6">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="space-y-3">
+            <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">
+              Runtime composition surface
             </p>
-            <button type="button" className="ui-button ui-button--primary" onClick={() => setShouldLoad(true)}>
-              Load remote now
-            </button>
+            <CardTitle>{title}</CardTitle>
+            <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">{description}</p>
           </div>
-        ) : null}
 
-        {shouldLoad && !isLoaded && !hasTimedOut ? (
-          <div className="remote-frame-shell__loading">
-            <p>Loading remote app from its own runtime origin...</p>
+          <div className="flex flex-wrap gap-3 lg:justify-end">
+            <a className={buttonVariants({ variant: 'outline' })} href={origin} target="_blank" rel="noreferrer">
+              Open standalone app
+            </a>
+            <a className={buttonVariants({ variant: 'dark' })} href={activeSrc} target="_blank" rel="noreferrer">
+              Open current route
+            </a>
           </div>
-        ) : null}
+        </div>
 
-        {shouldLoad && hasTimedOut && !isLoaded ? (
-          <div className="remote-frame-shell__fallback ui-stack-md">
-            <div>
-              <p className="ui-eyebrow">Day 19 / Remote outage drill</p>
-              <h4>{fallbackTitle}</h4>
+        <div className="flex flex-wrap gap-2.5">
+          <Badge variant="subtle">{framework}</Badge>
+          <Badge variant="subtle">{routeLabel}</Badge>
+          <Badge variant="subtle">Healthy origin {origin}</Badge>
+          {isSimulatedCartOutage ? <Badge variant="outline" className="border-rose-500/20 bg-rose-500/10 text-rose-700">Simulated outage {activeOrigin}</Badge> : null}
+          <Badge
+            variant="outline"
+            className={cn(
+              hasTimedOut
+                ? 'border-amber-500/24 bg-amber-500/10 text-amber-700'
+                : isLoaded
+                  ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-700'
+                  : 'border-border bg-background text-muted-foreground',
+            )}
+          >
+            {loadStatus}
+          </Badge>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-6">
+        <div className="relative min-h-[960px] overflow-hidden rounded-[1.5rem] border border-border/80 bg-background/70">
+          {!shouldLoad ? (
+            <div className="absolute inset-0 z-10 grid place-items-center bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(241,245,249,0.96))] px-6 text-center">
+              <div className="max-w-2xl space-y-4">
+                <div className="space-y-3">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">
+                    Deferred loading
+                  </p>
+                  <h4 className="text-2xl font-semibold tracking-[-0.04em] text-foreground">
+                    The remote request waits until this surface is close to the viewport.
+                  </h4>
+                </div>
+                <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+                  The shell keeps initial route work lighter by delaying the iframe request until
+                  this panel is likely to be seen, or until you choose to load it manually.
+                </p>
+                <Button variant="dark" onClick={() => setShouldLoad(true)}>
+                  Load remote now
+                </Button>
+              </div>
             </div>
-            <p className="ui-copy">{fallbackCopy}</p>
-            <div className="remote-frame-shell__actions">
-              <button type="button" className="ui-button ui-button--primary" onClick={handleRetry}>
-                Retry remote load
-              </button>
-              {isSimulatedCartOutage ? (
-                <a className="ui-button ui-button--ghost" href={recoveryHref}>
-                  Return to healthy shell route
-                </a>
-              ) : null}
-              <a className="ui-button ui-button--ghost" href={origin} target="_blank" rel="noreferrer">
-                Open standalone app
-              </a>
+          ) : null}
+
+          {shouldLoad && !isLoaded && !hasTimedOut ? (
+            <div className="absolute inset-0 z-10 grid place-items-center bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(241,245,249,0.94))] px-6 text-center text-sm text-muted-foreground">
+              Loading remote app from its own runtime origin...
             </div>
-          </div>
-        ) : null}
+          ) : null}
 
-        {shouldLoad ? (
-          <iframe
-            ref={frameRef}
-            key={`${retryKey}-${activeSrc}`}
-            title={title}
-            src={activeSrc}
-            loading="lazy"
-            className={isLoaded ? 'remote-frame remote-frame--visible' : 'remote-frame'}
-            onLoad={handleFrameLoad}
-          />
-        ) : null}
-      </div>
+          {shouldLoad && hasTimedOut && !isLoaded ? (
+            <div className="absolute inset-0 z-10 grid place-items-center bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(241,245,249,0.96))] px-6 text-center">
+              <div className="max-w-2xl space-y-4">
+                <div className="space-y-3">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-rose-600">
+                    Remote fallback
+                  </p>
+                  <h4 className="text-2xl font-semibold tracking-[-0.04em] text-foreground">
+                    {fallbackTitle}
+                  </h4>
+                </div>
+                <p className="text-sm leading-7 text-muted-foreground sm:text-base">{fallbackCopy}</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Button variant="dark" onClick={handleRetry}>
+                    Retry remote load
+                  </Button>
+                  {isSimulatedCartOutage ? (
+                    <a className={buttonVariants({ variant: 'outline' })} href={recoveryHref}>
+                      Return to healthy route
+                    </a>
+                  ) : null}
+                  <a className={buttonVariants({ variant: 'outline' })} href={origin} target="_blank" rel="noreferrer">
+                    Open standalone app
+                  </a>
+                </div>
+              </div>
+            </div>
+          ) : null}
 
-      <p className="remote-helper">
-        Lazy mount defers the iframe request until this surface is near the viewport or until you click the manual load button. If the remote stays unavailable, the shell keeps working and shows a retry path instead of crashing.
-      </p>
-    </section>
+          {shouldLoad ? (
+            <iframe
+              ref={frameRef}
+              key={`${retryKey}-${activeSrc}`}
+              title={title}
+              src={activeSrc}
+              loading="lazy"
+              className={
+                isLoaded
+                  ? 'block min-h-[960px] w-full border-0 bg-transparent opacity-100 transition-opacity duration-300'
+                  : 'block min-h-[960px] w-full border-0 bg-transparent opacity-0 transition-opacity duration-300'
+              }
+              onLoad={handleFrameLoad}
+            />
+          ) : null}
+        </div>
+
+        <p className="text-sm leading-7 text-muted-foreground">
+          Lazy mount defers the iframe request until this surface is near the viewport or until you
+          trigger it manually. If the remote stays unavailable, the shell keeps working and shows a
+          recovery path instead of collapsing.
+        </p>
+      </CardContent>
+    </Card>
   );
 }
+
+

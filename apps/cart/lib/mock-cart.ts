@@ -2,37 +2,37 @@ import type { CartItem, Product } from '@commerce/shared-types';
 
 export const mockCartProducts: Product[] = [
   {
-    id: 'p-canvas-weekender',
-    name: 'Canvas Weekender',
-    price: 129,
-    category: 'Travel',
+    id: 'p-edge-gateway-x4',
+    name: 'Edge Gateway X4',
+    price: 1290,
+    category: 'Edge infrastructure',
     rating: 4.9,
   },
   {
-    id: 'p-dune-bottle',
-    name: 'Dune Steel Bottle',
-    price: 36,
-    category: 'Accessories',
+    id: 'p-telemetry-sensor-kit-24',
+    name: 'Telemetry Sensor Kit 24',
+    price: 480,
+    category: 'Industrial sensing',
     rating: 4.8,
   },
   {
-    id: 'p-sand-runner',
-    name: 'Sand Runner Sneakers',
-    price: 88,
-    category: 'Footwear',
+    id: 'p-rugged-scanner-r2',
+    name: 'Rugged Scanner R2',
+    price: 640,
+    category: 'Warehouse automation',
     rating: 4.7,
   },
   {
-    id: 'p-cloud-lamp',
-    name: 'Cloud Desk Lamp',
-    price: 74,
-    category: 'Home',
-    rating: 4.6,
+    id: 'p-orbit-dev-kit',
+    name: 'Orbit Developer Kit',
+    price: 320,
+    category: 'Developer enablement',
+    rating: 4.9,
   },
 ];
 
 export const mockCartItems: CartItem[] = [
-  { productId: 'p-canvas-weekender', quantity: 1 },
-  { productId: 'p-dune-bottle', quantity: 2 },
-  { productId: 'p-sand-runner', quantity: 1 },
+  { productId: 'p-edge-gateway-x4', quantity: 1 },
+  { productId: 'p-telemetry-sensor-kit-24', quantity: 2 },
+  { productId: 'p-rugged-scanner-r2', quantity: 1 },
 ];

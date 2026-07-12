@@ -14,6 +14,6 @@ export const shellCartStateSyncMessageName = SHELL_MESSAGES['shell:cart-state-sy
 export type IncomingCartStateSyncPayload = ShellMessageMap[typeof shellCartStateSyncMessageName];
 
 export const sampleIncomingCartItemAddedPayload: IncomingCartItemAddedPayload = {
-  productId: 'p-canvas-weekender',
+  productId: 'p-edge-gateway-x4',
   quantity: 1,
 };
