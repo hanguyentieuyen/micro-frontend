@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { Badge, buttonVariants, cn } from '@commerce/shared-ui';
+import { buttonVariants, cn } from '@commerce/shared-ui';
 import type { CartStateSnapshot } from '@commerce/shared-types';
 
 import Link from 'next/link';
@@ -44,31 +44,30 @@ export function TopNav() {
   }, []);
 
   return (
-    <header className="rounded-2xl border border-border/80 bg-card/90 px-5 py-4 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:px-6">
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-sm">
-            RS
+    <header className="hf-panel hf-terminal-border px-5 py-5 sm:px-6">
+      <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center border-[3px] border-foreground bg-primary font-[family:var(--font-display)] text-lg font-black uppercase tracking-[-0.06em] text-primary-foreground shadow-[4px_4px_0_hsl(var(--foreground))]">
+              HF
+            </div>
+
+            <div className="space-y-2">
+              <p className="hf-kicker">HF sneaker riot</p>
+              <h1 className="font-[family:var(--font-display)] text-2xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-foreground sm:text-3xl">
+                Sneaker drops staged like posters, not polite ecommerce.
+              </h1>
+            </div>
           </div>
 
-          <div className="space-y-1.5">
-            <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">
-              Relay Supply Cloud
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-lg font-semibold tracking-[-0.03em] text-foreground sm:text-xl">
-                Procurement-grade ecommerce for technical teams
-              </h1>
-              <Badge variant="info">Shell host</Badge>
-            </div>
-            <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-              One buyer shell coordinates catalog discovery, batch purchasing, and account context
-              across independently runnable frontend domains.
-            </p>
+          <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.18em] text-foreground lg:ml-4">
+            <span className="border-[3px] border-foreground bg-accent px-3 py-2 shadow-[4px_4px_0_hsl(var(--foreground))]">drop live</span>
+            <span className="border-[3px] border-foreground bg-secondary px-3 py-2 text-secondary-foreground shadow-[4px_4px_0_hsl(var(--foreground))]">size locked</span>
+            <span className="border-[3px] border-foreground bg-card px-3 py-2 shadow-[4px_4px_0_hsl(var(--foreground))]">bag sync</span>
           </div>
         </div>
 
-        <nav aria-label="Primary" className="flex flex-wrap gap-2">
+        <nav aria-label="Primary" className="flex flex-wrap gap-3 xl:justify-end">
           {NAV_ITEMS.map((item) => {
             const active = isActiveLink(pathname, item.href);
             const showCartBadge = item.href === '/cart' && cartCount > 0;
@@ -78,9 +77,9 @@ export function TopNav() {
                 key={item.href}
                 href={item.href}
                 className={buttonVariants({
-                  variant: active ? 'dark' : 'outline',
+                  variant: active ? 'default' : 'ghost',
                   size: 'sm',
-                  className: 'relative',
+                  className: 'relative min-w-[104px] justify-center',
                 })}
               >
                 <span className="inline-flex items-center gap-2">
@@ -88,12 +87,12 @@ export function TopNav() {
                   {showCartBadge ? (
                     <span
                       className={cn(
-                        'inline-flex min-w-6 items-center justify-center rounded-md px-1.5 py-0.5 text-[11px] font-semibold',
+                        'inline-flex min-w-6 items-center justify-center border-[3px] px-1.5 py-0.5 font-mono text-[10px] tracking-[0.12em] shadow-[3px_3px_0_hsl(var(--foreground))]',
                         active
-                          ? 'bg-background/10 text-background'
-                          : 'bg-accent/10 text-accent',
+                          ? 'border-primary-foreground bg-card text-foreground'
+                          : 'border-foreground bg-accent text-foreground',
                       )}
-                      aria-label={`Cart count ${cartCount}`}
+                      aria-label={`Bag count ${cartCount}`}
                     >
                       {cartCount}
                     </span>
@@ -107,4 +106,3 @@ export function TopNav() {
     </header>
   );
 }
-

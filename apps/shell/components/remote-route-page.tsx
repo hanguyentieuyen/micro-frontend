@@ -1,4 +1,4 @@
-import { Badge, Card, CardHeader, SectionHeading, buttonVariants } from '@commerce/shared-ui';
+﻿import { Badge, Card, CardHeader, SectionHeading } from '@commerce/shared-ui';
 
 import Link from 'next/link';
 
@@ -24,27 +24,27 @@ export function RemoteRoutePage({ remoteId, segments = [], searchParams = {} }: 
 
   return (
     <div className="space-y-6">
-      <Card className="rounded-[2rem] bg-card/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+      <Card className="hf-terminal-border rounded-[0.25rem] bg-card">
         <CardHeader className="space-y-5">
           <SectionHeading
             eyebrow="Embedded runtime"
-            title={`${remote.label} stays independently runnable while still mounting inside the shared buyer shell.`}
-            description={`${remote.description} The host route ${shellRoute} keeps navigation, shared context, and recovery UI outside the remote while the domain continues to own its own runtime surface.`}
+            title={`${remote.label} stays independently runnable while docking inside the HF storefront shell.`}
+            description={`${remote.description} The host route ${shellRoute} keeps navigation, shared context, and recovery UI outside the remote while the domain still owns its own scene, deep links, and framework boundary.`}
           />
 
-          <div className="flex flex-wrap gap-2.5">
-            <Badge variant="subtle">Shell route {shellRoute}</Badge>
+          <div className="flex flex-wrap gap-3">
+            <Badge variant="outline">Shell route {shellRoute}</Badge>
             <Badge variant="subtle">Remote path {nestedPathLabel}</Badge>
-            <Badge variant="info">{remote.framework}</Badge>
+            <Badge variant="secondary">{remote.framework}</Badge>
           </div>
 
           {remoteId === 'cart' ? (
             <p className="text-sm leading-7 text-muted-foreground">
               Need to verify resilience? Open{' '}
-              <Link href={cartOutageHref} className="font-medium text-sky-700 underline underline-offset-4">
+              <Link href={cartOutageHref} className="font-medium text-foreground underline underline-offset-4">
                 {cartOutageHref}
               </Link>{' '}
-              to simulate a cart outage while keeping the shell usable.
+              to simulate a bag outage while keeping the storefront shell usable.
             </p>
           ) : null}
 
@@ -53,7 +53,7 @@ export function RemoteRoutePage({ remoteId, segments = [], searchParams = {} }: 
               Deep linking still lands inside the correct remote boundary:{' '}
               <Link
                 href={remote.nestedExamplePath}
-                className="font-medium text-sky-700 underline underline-offset-4"
+                className="font-medium text-foreground underline underline-offset-4"
               >
                 {remote.nestedExamplePath}
               </Link>
@@ -79,4 +79,3 @@ export function RemoteRoutePage({ remoteId, segments = [], searchParams = {} }: 
     </div>
   );
 }
-

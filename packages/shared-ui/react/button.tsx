@@ -1,25 +1,32 @@
-import * as React from 'react';
+﻿import * as React from 'react';
 
 import { cn } from '../lib/cn';
 
 const buttonBaseClassName =
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50';
+  'hf-shift inline-flex items-center justify-center gap-2 whitespace-nowrap border-[3px] border-foreground text-[11px] font-black uppercase tracking-[0.16em] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:opacity-50';
 
 const buttonVariantClassNames = {
-  default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-  outline: 'border border-border bg-card text-foreground shadow-sm hover:bg-secondary',
-  ghost: 'text-muted-foreground hover:bg-secondary hover:text-foreground',
-  soft: 'border border-accent/10 bg-accent/10 text-accent hover:bg-accent/15',
-  dark: 'bg-foreground text-background shadow-sm hover:bg-foreground/90',
-  destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+  default:
+    'bg-primary text-primary-foreground shadow-[6px_6px_0_hsl(var(--foreground))] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--foreground))]',
+  secondary:
+    'bg-secondary text-secondary-foreground shadow-[6px_6px_0_hsl(var(--foreground))] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--foreground))]',
+  outline:
+    'bg-accent text-accent-foreground shadow-[6px_6px_0_hsl(var(--foreground))] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--foreground))]',
+  ghost:
+    'bg-card text-foreground shadow-[6px_6px_0_hsl(var(--foreground))] hover:-translate-x-1 hover:-translate-y-1 hover:bg-muted hover:shadow-[9px_9px_0_hsl(var(--foreground))]',
+  soft:
+    'bg-muted text-foreground shadow-[6px_6px_0_hsl(var(--foreground))] hover:-translate-x-1 hover:-translate-y-1 hover:bg-accent hover:shadow-[9px_9px_0_hsl(var(--foreground))]',
+  dark:
+    'bg-foreground text-background shadow-[6px_6px_0_hsl(var(--accent))] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--accent))]',
+  destructive:
+    'bg-destructive text-destructive-foreground shadow-[6px_6px_0_hsl(var(--foreground))] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--foreground))]',
 } as const;
 
 const buttonSizeClassNames = {
-  default: 'h-10 px-4 py-2',
-  sm: 'h-9 px-3 text-sm',
-  lg: 'h-11 px-5 text-sm',
-  icon: 'h-10 w-10',
+  default: 'min-h-11 px-4 py-2',
+  sm: 'min-h-9 px-3 py-2 text-[10px]',
+  lg: 'min-h-12 px-5 py-3 text-[12px]',
+  icon: 'h-11 w-11',
 } as const;
 
 export type ButtonVariant = keyof typeof buttonVariantClassNames;
@@ -60,4 +67,3 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     />
   );
 });
-

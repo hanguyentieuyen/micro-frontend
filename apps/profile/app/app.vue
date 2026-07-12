@@ -1,36 +1,36 @@
-<template>
-  <div class="mx-auto flex min-h-[100dvh] w-full max-w-7xl flex-col gap-6 bg-[radial-gradient(circle_at_18%_0%,rgba(59,130,246,0.12),transparent_28%),radial-gradient(circle_at_84%_12%,rgba(59,130,246,0.08),transparent_24%),linear-gradient(180deg,#f8fafc_0%,#eff6ff_100%)] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-    <header class="rounded-[2rem] border border-border/80 bg-card/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-8">
+﻿<template>
+  <div class="mx-auto flex min-h-[100dvh] w-full max-w-[1540px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+    <header class="hf-panel hf-terminal-border p-6 sm:p-8">
       <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <div class="space-y-3">
-          <p class="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">
-            Profile domain
+        <div class="space-y-4">
+          <p class="hf-kicker">
+            Profile remote
           </p>
           <div class="space-y-3">
-            <h1 class="max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
-              Buyer identity stays independent while the shell shares the runtime context.
+            <h1 class="font-[family:var(--font-display)] text-5xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-foreground sm:text-6xl">
+              Size profile, address book, and drop alerts live in the same loud system.
             </h1>
             <p class="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-              Profile owns account-facing journeys, approval posture, and security routes, while the
-              host shell only hands off typed user context at runtime.
+              This remote owns account-facing sneaker flows while the host shell only hands off typed
+              user context and keeps runtime composition outside the buying journey.
             </p>
           </div>
         </div>
 
-        <nav class="flex flex-wrap gap-2" aria-label="Profile navigation">
+        <nav class="flex flex-wrap gap-3" aria-label="Profile navigation">
           <NuxtLink
             to="/"
-            class="inline-flex items-center rounded-md border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground transition duration-200 hover:-translate-y-0.5 hover:bg-secondary"
-            active-class="!bg-primary !text-primary-foreground !border-primary"
-            exact-active-class="!bg-primary !text-primary-foreground !border-primary"
+            class="inline-flex min-h-11 items-center justify-center border-[3px] border-foreground bg-card px-4 py-2 font-black uppercase tracking-[0.16em] text-foreground shadow-[6px_6px_0_hsl(var(--foreground))] transition duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--foreground))]"
+            active-class="!bg-primary !text-primary-foreground"
+            exact-active-class="!bg-primary !text-primary-foreground"
           >
             Overview
           </NuxtLink>
           <NuxtLink
             to="/security"
-            class="inline-flex items-center rounded-md border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground transition duration-200 hover:-translate-y-0.5 hover:bg-secondary"
-            active-class="!bg-primary !text-primary-foreground !border-primary"
-            exact-active-class="!bg-primary !text-primary-foreground !border-primary"
+            class="inline-flex min-h-11 items-center justify-center border-[3px] border-foreground bg-accent px-4 py-2 font-black uppercase tracking-[0.16em] text-foreground shadow-[6px_6px_0_hsl(var(--foreground))] transition duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_hsl(var(--foreground))]"
+            active-class="!bg-secondary !text-secondary-foreground"
+            exact-active-class="!bg-secondary !text-secondary-foreground"
           >
             Security
           </NuxtLink>
@@ -43,4 +43,3 @@
     </main>
   </div>
 </template>
-

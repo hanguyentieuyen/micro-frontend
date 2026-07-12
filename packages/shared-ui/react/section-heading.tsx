@@ -1,4 +1,4 @@
-import * as React from 'react';
+﻿import * as React from 'react';
 
 import { cn } from '../lib/cn';
 
@@ -20,15 +20,18 @@ export function SectionHeading({
   descriptionClassName,
 }: SectionHeadingProps) {
   return (
-    <div className={cn('space-y-3', className)}>
-      {eyebrow ? (
-        <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">{eyebrow}</p>
-      ) : null}
-      <h2 className={cn('text-3xl font-semibold tracking-[-0.05em] text-foreground sm:text-4xl', titleClassName)}>
+    <div className={cn('space-y-4', className)}>
+      {eyebrow ? <p className="hf-kicker">{eyebrow}</p> : null}
+      <h2
+        className={cn(
+          'font-[family:var(--font-display)] text-4xl font-black uppercase leading-[0.88] tracking-[-0.06em] text-foreground sm:text-5xl lg:text-6xl',
+          titleClassName,
+        )}
+      >
         {title}
       </h2>
       {description ? (
-        <p className={cn('max-w-[65ch] text-sm leading-7 text-muted-foreground sm:text-base', descriptionClassName)}>
+        <p className={cn('max-w-[70ch] text-sm leading-7 text-muted-foreground sm:text-base', descriptionClassName)}>
           {description}
         </p>
       ) : null}

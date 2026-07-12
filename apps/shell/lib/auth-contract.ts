@@ -1,13 +1,13 @@
-import { MICRO_APP_EVENTS, type MicroAppEventMap, type User } from '@commerce/shared-types';
+﻿import { MICRO_APP_EVENTS, type MicroAppEventMap, type User } from '@commerce/shared-types';
 
 export const authUserChangedEventName = MICRO_APP_EVENTS['auth:user-changed'];
 
 export type AuthUserChangedContract = MicroAppEventMap[typeof authUserChangedEventName];
 
 export const mockShellUser: User = {
-  id: 'u-buyer-01',
-  name: 'Avery Nguyen',
-  email: 'avery@northgrid.io',
+  id: 'u-hf-drop-09',
+  name: 'Mina Corvin',
+  email: 'mina@hf-run.club',
   role: 'admin',
 };
 

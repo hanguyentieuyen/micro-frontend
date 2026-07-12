@@ -1,73 +1,75 @@
-import { Badge, Card, CardHeader, SectionHeading } from '@commerce/shared-ui';
+﻿import { Badge } from '@commerce/shared-ui';
 
 import { ProductsCatalog } from '../components/products-catalog';
 import { mockProducts } from '../lib/mock-products';
 
 const boundaryNotes = [
   {
-    title: 'Approved inventory',
-    copy: 'Products focuses on buyer-facing catalog quality so teams can evaluate technical SKUs without pulling cart concerns into the domain.',
+    title: 'Broken grid, not product wallpaper',
+    copy: 'The catalog refuses a uniform card matrix. Some pairs dominate the wall and others sit back like side posters.',
   },
   {
-    title: 'Intent handoff',
-    copy: 'This remote stops at procurement intent and lets the shell decide how shared cart state should evolve across the broader storefront.',
+    title: 'Bag-ready handoff',
+    copy: 'Every loud card still emits one typed cart event so the shell and bag remote stay synchronized under the styling.',
   },
   {
-    title: 'Controlled contract',
-    copy: 'The add-to-cart flow still uses one shared contract, so the catalog can stay independent without drifting from the rest of the platform.',
+    title: 'Filters feel physical',
+    copy: 'The controls read like labels and switches instead of a quiet toolbar, which keeps the interaction aligned with the overall mood.',
   },
 ];
 
 export default function ProductsHomePage() {
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_260px]">
-        <Card className="rounded-[2rem] bg-card/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
-          <CardHeader className="space-y-6">
-            <SectionHeading
-              eyebrow="Products domain"
-              title="A technical catalog built for deployment-ready purchasing."
-              description="Buyers can review approved infrastructure SKUs, compare readiness signals, and emit add-to-cart intent without pulling cart presentation or shell state management into the catalog surface."
-            />
-
-            <div className="flex flex-wrap gap-2.5">
-              <Badge variant="info">Next.js remote</Badge>
-              <Badge variant="subtle">Event-driven procurement intent</Badge>
+    <main className="mx-auto flex w-full max-w-[1540px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_340px]">
+        <div className="hf-panel hf-terminal-border p-6 sm:p-8">
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <p className="hf-kicker">Shop wall</p>
+              <h1 className="font-[family:var(--font-display)] text-5xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-foreground sm:text-6xl">
+                HF sneaker grid is loud on purpose.
+              </h1>
+              <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+                Explore low-profile pairs, boxed high-tops, and trail-heavy silhouettes inside a
+                catalog that behaves more like an experimental poster system than a polite store shelf.
+              </p>
             </div>
-          </CardHeader>
-        </Card>
 
-        <Card className="rounded-[2rem] border-foreground/10 bg-foreground text-background shadow-[0_28px_90px_rgba(15,23,42,0.18)]">
-          <CardHeader className="space-y-3">
-            <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-300">
-              Seed catalog
-            </span>
-            <strong className="block text-5xl font-semibold tracking-[-0.08em]">
-              {mockProducts.length}
+            <div className="flex flex-wrap gap-3">
+              <Badge variant="default">Next.js remote</Badge>
+              <Badge variant="outline">non-uniform product cards</Badge>
+              <Badge variant="secondary">bag event contract</Badge>
+            </div>
+          </div>
+        </div>
+
+        <div className="hf-panel hf-panel-dark p-6 sm:p-8">
+          <div className="space-y-3">
+            <p className="hf-kicker bg-accent text-foreground">Pairs live</p>
+            <strong className="block font-[family:var(--font-display)] text-7xl font-black uppercase leading-none tracking-[-0.08em] text-white">
+              {String(mockProducts.length).padStart(2, '0')}
             </strong>
-            <p className="text-sm leading-7 text-slate-300">
-              launch-ready SKUs seeded across edge infrastructure, sensing, and developer enablement.
+            <p className="text-sm leading-7 text-white/78">
+              aggressive silhouettes currently pinned to the wall with oversized numbers, loud price tags, and odd spacing.
             </p>
-          </CardHeader>
-        </Card>
+          </div>
+        </div>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-3">
-        {boundaryNotes.map((note) => (
-          <Card
+        {boundaryNotes.map((note, index) => (
+          <div
             key={note.title}
-            className="bg-card/90"
+            className={index === 1 ? 'hf-panel bg-accent p-6' : 'hf-panel p-6'}
           >
-            <CardHeader className="space-y-3 p-6">
-              <Badge variant="info" className="w-fit uppercase tracking-[0.24em]">
-                Catalog guardrail
-              </Badge>
-              <h2 className="text-xl font-semibold tracking-[-0.03em] text-foreground">
+            <div className="space-y-3">
+              <p className="hf-kicker">Catalog note</p>
+              <h2 className="font-[family:var(--font-display)] text-2xl font-black uppercase leading-[0.92] tracking-[-0.05em] text-foreground">
                 {note.title}
               </h2>
               <p className="text-sm leading-7 text-muted-foreground">{note.copy}</p>
-            </CardHeader>
-          </Card>
+            </div>
+          </div>
         ))}
       </section>
 
@@ -75,4 +77,3 @@ export default function ProductsHomePage() {
     </main>
   );
 }
-

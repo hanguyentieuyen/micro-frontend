@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import {
   MICRO_APP_EVENTS,
   isMicroAppEventEnvelope,
@@ -8,28 +8,28 @@ import {
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const user: User = {
-  id: 'u-buyer-01',
-  name: 'Avery Nguyen',
-  email: 'avery@northgrid.io',
+  id: 'u-hf-drop-09',
+  name: 'Mina Corvin',
+  email: 'mina@hf-run.club',
   role: 'admin',
 }
 
-const roleLabel = user.role === 'admin' ? 'Procurement admin' : 'Buying team'
+const roleLabel = user.role === 'admin' ? 'Drop captain' : 'HF member'
 
 const accountStats = [
-  { label: 'Approval chain', value: 'Finance + operations' },
-  { label: 'Saved ship-to sites', value: '4' },
-  { label: 'Open quote requests', value: '2' },
+  { label: 'Saved size', value: 'US 9.5' },
+  { label: 'Live raffles', value: '02' },
+  { label: 'Pairs in bag', value: '03' },
 ]
 
 const activity = [
-  { label: 'Batch RG-2041', value: 'Awaiting manager approval' },
-  { label: 'Vendor compliance', value: 'NorthGrid certified' },
-  { label: 'Saved project', value: 'Edge rollout phase 2' },
+  { label: 'HF Rift Runner 01', value: 'Bag reserved before launch close' },
+  { label: 'HF Bricklane High', value: 'Back-in-stock alert enabled' },
+  { label: 'HF Noise Trail', value: 'Shipping address confirmed' },
 ]
 
 const boundaryNotes = [
-  { label: 'Host handoff', value: 'typed auth context only' },
+  { label: 'Host handoff', value: 'typed user context only' },
   { label: 'Framework boundary', value: 'Nuxt remote inside Next shell' },
   { label: 'Deep link', value: '/profile/security stays local' },
 ]
@@ -70,29 +70,29 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-    <section class="rounded-[2rem] border border-border/80 bg-card/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-8">
+    <section class="hf-panel hf-terminal-border p-6 sm:p-8">
       <div class="space-y-6">
         <div class="flex flex-col gap-5 sm:flex-row sm:items-start">
-          <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-primary text-lg font-semibold text-primary-foreground shadow-sm">
-            AN
+          <div class="flex h-20 w-20 items-center justify-center border-[4px] border-foreground bg-primary font-[family:var(--font-display)] text-xl font-black uppercase tracking-[-0.06em] text-primary-foreground shadow-[6px_6px_0_hsl(var(--foreground))]">
+            HF
           </div>
 
           <div class="space-y-4">
             <div class="space-y-2">
-              <h2 class="text-3xl font-semibold tracking-[-0.04em] text-foreground">
+              <h2 class="font-[family:var(--font-display)] text-4xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-foreground">
                 {{ user.name }}
               </h2>
               <p class="max-w-2xl text-sm leading-7 text-muted-foreground">
-                Profile keeps buyer identity and account-facing UX in one place while the shell only
-                shares the runtime context needed to personalize the remote.
+                Profile keeps size preferences, alerts, addresses, and account-facing sneaker flows
+                inside one remote while the shell only shares runtime identity context.
               </p>
             </div>
 
-            <div class="flex flex-wrap gap-2.5">
-              <span class="inline-flex items-center rounded-md border border-sky-500/20 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-700">
+            <div class="flex flex-wrap gap-3">
+              <span class="border-[3px] border-foreground bg-accent px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground shadow-[4px_4px_0_hsl(var(--foreground))]">
                 {{ roleLabel }}
               </span>
-              <span class="inline-flex items-center rounded-md border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-secondary-foreground">
+              <span class="border-[3px] border-foreground bg-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.24em] text-foreground shadow-[4px_4px_0_hsl(var(--foreground))]">
                 typed auth handoff
               </span>
             </div>
@@ -100,36 +100,40 @@ onBeforeUnmount(() => {
         </div>
 
         <ul class="grid gap-3">
-          <li class="flex flex-col gap-1 rounded-xl border border-border/70 bg-muted/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-            <span class="text-sm text-muted-foreground">Email</span>
-            <strong class="text-sm font-semibold text-foreground">{{ user.email }}</strong>
+          <li class="border-[4px] border-foreground bg-card px-4 py-3 shadow-[6px_6px_0_hsl(var(--foreground))]">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+              <span class="text-sm text-muted-foreground">Email</span>
+              <strong class="text-sm font-semibold text-foreground">{{ user.email }}</strong>
+            </div>
           </li>
           <li
             v-for="item in accountStats"
             :key="item.label"
-            class="flex flex-col gap-1 rounded-xl border border-border/70 bg-muted/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+            class="border-[4px] border-foreground bg-card px-4 py-3 shadow-[6px_6px_0_hsl(var(--foreground))]"
           >
-            <span class="text-sm text-muted-foreground">{{ item.label }}</span>
-            <strong class="text-sm font-semibold text-foreground">{{ item.value }}</strong>
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+              <span class="text-sm text-muted-foreground">{{ item.label }}</span>
+              <strong class="text-sm font-semibold text-foreground">{{ item.value }}</strong>
+            </div>
           </li>
         </ul>
 
         <div class="grid gap-4 md:grid-cols-3">
-          <article class="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
-            <span class="text-xs uppercase tracking-[0.24em] text-muted-foreground">Expected event</span>
-            <strong class="mt-2 block text-base font-semibold tracking-[-0.02em] text-foreground">
+          <article class="border-[4px] border-foreground bg-card p-5 shadow-[6px_6px_0_hsl(var(--foreground))]">
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Expected event</span>
+            <strong class="mt-2 block text-base uppercase tracking-[0.14em] text-foreground">
               {{ authUserChangedEventName }}
             </strong>
           </article>
-          <article class="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
-            <span class="text-xs uppercase tracking-[0.24em] text-muted-foreground">Expected userId</span>
-            <strong class="mt-2 block text-base font-semibold tracking-[-0.02em] text-foreground">
+          <article class="border-[4px] border-foreground bg-accent p-5 shadow-[6px_6px_0_hsl(var(--foreground))]">
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/70">Expected userId</span>
+            <strong class="mt-2 block text-base uppercase tracking-[0.14em] text-foreground">
               {{ expectedAuthPayload.userId }}
             </strong>
           </article>
-          <article class="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
-            <span class="text-xs uppercase tracking-[0.24em] text-muted-foreground">Latest shell sync</span>
-            <strong class="mt-2 block text-base font-semibold tracking-[-0.02em] text-foreground">
+          <article class="border-[4px] border-foreground bg-secondary p-5 text-secondary-foreground shadow-[6px_6px_0_hsl(var(--foreground))]">
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-white/70">Latest shell sync</span>
+            <strong class="mt-2 block text-base uppercase tracking-[0.14em]">
               {{ receivedAuthUserId ?? 'Waiting for shell auth context' }}
             </strong>
           </article>
@@ -138,53 +142,57 @@ onBeforeUnmount(() => {
     </section>
 
     <aside class="grid gap-6">
-      <section class="rounded-[2rem] border border-border/80 bg-card/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-8">
+      <section class="hf-panel p-6 sm:p-8">
         <div class="space-y-5">
           <div class="space-y-3">
-            <p class="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">
-              Account snapshot
+            <p class="hf-kicker">
+              Activity feed
             </p>
-            <h2 class="text-2xl font-semibold tracking-[-0.04em] text-foreground">
-              Recent buyer activity
+            <h2 class="font-[family:var(--font-display)] text-3xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-foreground">
+              Recent drop activity
             </h2>
             <p class="text-sm leading-7 text-muted-foreground">
-              Operational signals stay within the profile boundary even when the shell is the runtime host.
+              Purchase-adjacent signals stay inside the profile boundary even when the shell owns the runtime composition.
             </p>
           </div>
           <ul class="grid gap-3">
             <li
               v-for="item in activity"
               :key="item.label"
-              class="flex flex-col gap-1 rounded-xl border border-border/70 bg-muted/60 px-4 py-3"
+              class="border-[4px] border-foreground bg-card px-4 py-3 shadow-[6px_6px_0_hsl(var(--foreground))]"
             >
-              <span class="text-sm text-muted-foreground">{{ item.label }}</span>
-              <strong class="text-sm font-semibold text-foreground">{{ item.value }}</strong>
+              <div class="flex flex-col gap-1">
+                <span class="text-sm text-muted-foreground">{{ item.label }}</span>
+                <strong class="text-sm font-semibold text-foreground">{{ item.value }}</strong>
+              </div>
             </li>
           </ul>
         </div>
       </section>
 
-      <section class="rounded-[2rem] border border-foreground/10 bg-foreground p-6 text-background shadow-[0_28px_90px_rgba(15,23,42,0.18)] sm:p-8">
+      <section class="hf-panel hf-panel-dark p-6 text-background sm:p-8">
         <div class="space-y-5">
           <div class="space-y-3">
-            <p class="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-300">
+            <p class="hf-kicker bg-accent text-foreground">
               Boundary notes
             </p>
-            <h2 class="text-2xl font-semibold tracking-[-0.04em]">
-              A second framework still fits the same buyer platform.
+            <h2 class="font-[family:var(--font-display)] text-3xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-white">
+              A second framework still belongs to the same storefront.
             </h2>
-            <p class="text-sm leading-7 text-slate-300">
-              This remote proves the storefront can compose another frontend stack without bypassing host contracts.
+            <p class="text-sm leading-7 text-white/80">
+              This remote proves the sneaker store can compose another frontend stack without breaking the host contract.
             </p>
           </div>
           <ul class="grid gap-3">
             <li
               v-for="item in boundaryNotes"
               :key="item.label"
-              class="flex flex-col gap-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+              class="border-[4px] border-white bg-black/10 px-4 py-3 shadow-[6px_6px_0_hsl(var(--accent))]"
             >
-              <span class="text-sm text-slate-400">{{ item.label }}</span>
-              <strong class="text-sm font-semibold text-white">{{ item.value }}</strong>
+              <div class="flex flex-col gap-1">
+                <span class="text-sm text-white/70">{{ item.label }}</span>
+                <strong class="text-sm font-semibold text-white">{{ item.value }}</strong>
+              </div>
             </li>
           </ul>
         </div>
@@ -192,4 +200,3 @@ onBeforeUnmount(() => {
     </aside>
   </div>
 </template>
-

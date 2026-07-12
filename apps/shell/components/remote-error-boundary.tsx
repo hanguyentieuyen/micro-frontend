@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@commerce/shared-ui';
 import { Component, type ReactNode } from 'react';
@@ -42,14 +42,14 @@ export class RemoteErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <Card className="border-rose-500/20 bg-card/95">
+        <Card className="hf-terminal-border bg-card">
           <CardHeader className="space-y-3">
-            <Badge variant="outline" className="w-fit border-rose-500/20 bg-rose-500/10 text-rose-700">
+            <Badge variant="destructive" className="w-fit">
               Shell fallback
             </Badge>
-            <CardTitle>{this.props.remoteLabel} failed inside the shell surface.</CardTitle>
+            <CardTitle>{this.props.remoteLabel} failed inside the storefront surface.</CardTitle>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              The host stays usable even if one integration surface throws. Error message:{' '}
+              The host shell stays usable even if one integration surface throws. Error message:{' '}
               <code>{this.state.message || 'Unknown runtime error'}</code>
             </p>
           </CardHeader>
@@ -65,4 +65,3 @@ export class RemoteErrorBoundary extends Component<
     return this.props.children;
   }
 }
-

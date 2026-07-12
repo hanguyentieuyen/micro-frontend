@@ -1,24 +1,24 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 const checks = [
-  'SAML SSO enforced for buyer admins',
-  'MFA required before approval changes',
-  'Session and device audit visible to the account owner',
+  'MFA required before limited-drop checkout',
+  'Saved address locks before raffle confirmation',
+  'Purchase audit stays visible for every reserved pair',
 ]
 </script>
 
 <template>
-  <section class="rounded-[2rem] border border-border/80 bg-card/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-8">
+  <section class="hf-panel hf-terminal-border p-6 sm:p-8">
     <div class="space-y-6">
       <div class="space-y-3">
-        <p class="text-[11px] font-medium uppercase tracking-[0.32em] text-sky-600">
+        <p class="hf-kicker">
           Security route
         </p>
-        <h2 class="text-3xl font-semibold tracking-[-0.05em] text-foreground sm:text-4xl">
-          Security stays inside the buyer workspace boundary.
+        <h2 class="font-[family:var(--font-display)] text-4xl font-black uppercase leading-[0.9] tracking-[-0.06em] text-foreground sm:text-5xl">
+          Security stays loud without leaving the profile boundary.
         </h2>
         <p class="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-          This screen proves the shell can deep link into a second Nuxt-owned route without taking
-          responsibility away from the remote that owns the account journey.
+          This route proves the shell can deep link into a Nuxt-owned security scene while the remote
+          keeps full control of account protection and sneaker purchase safeguards.
         </p>
       </div>
 
@@ -26,10 +26,10 @@ const checks = [
         <article
           v-for="item in checks"
           :key="item"
-          class="rounded-xl border border-border/70 bg-card p-5 shadow-sm"
+          class="border-[4px] border-foreground bg-card p-5 shadow-[6px_6px_0_hsl(var(--foreground))]"
         >
-          <strong class="block text-sm font-semibold uppercase tracking-[0.24em] text-sky-700">
-            Ready
+          <strong class="inline-flex border-[3px] border-foreground bg-accent px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-foreground shadow-[4px_4px_0_hsl(var(--foreground))]">
+            locked
           </strong>
           <span class="mt-3 block text-base leading-7 text-foreground">{{ item }}</span>
         </article>
@@ -37,4 +37,3 @@ const checks = [
     </div>
   </section>
 </template>
-

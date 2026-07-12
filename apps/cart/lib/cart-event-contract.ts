@@ -1,4 +1,4 @@
-import {
+﻿import {
   MICRO_APP_EVENTS,
   SHELL_MESSAGES,
   type MicroAppEventMap,
@@ -14,6 +14,6 @@ export const shellCartStateSyncMessageName = SHELL_MESSAGES['shell:cart-state-sy
 export type IncomingCartStateSyncPayload = ShellMessageMap[typeof shellCartStateSyncMessageName];
 
 export const sampleIncomingCartItemAddedPayload: IncomingCartItemAddedPayload = {
-  productId: 'p-edge-gateway-x4',
+  productId: 'p-hf-rift-runner-01',
   quantity: 1,
 };
