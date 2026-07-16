@@ -1,6 +1,6 @@
-# Commerce Portal Micro Frontend
+# HF Commerce Portal
 
-A learning-focused micro frontend demo built with a `monorepo + domain boundaries + runtime composition` mindset.
+A sneaker-commerce portfolio project and learning-focused micro frontend demo. It uses a `monorepo + domain boundaries + runtime composition` approach to show how independently buildable frontend domains can still feel like one product.
 
 ## What This Repository Demonstrates
 
@@ -9,7 +9,7 @@ A learning-focused micro frontend demo built with a `monorepo + domain boundarie
 - cross-app communication through typed contracts
 - runtime composition between `Next.js` and `Nuxt`
 - remote failure isolation and fallback behavior
-- style isolation through `iframe` boundaries plus CSS Modules inside remotes
+- style isolation through `iframe` boundaries and a shared Tailwind CSS design system
 - repository-level smoke and integration checks for the core architecture
 
 ## Why Micro Frontend For This Demo?
@@ -71,7 +71,9 @@ tests/
 npm install
 ```
 
-## Run The Apps
+## Quick Start
+
+Run these commands in four terminal windows. The shell is the only user-facing entrypoint; it loads the domain apps on demand.
 
 ```bash
 npm run dev:shell
@@ -80,12 +82,31 @@ npm run dev:cart
 npm run dev:profile
 ```
 
+Then open `http://localhost:3000`. Use the shell navigation to visit Products, Cart, and Profile.
+
+## Standalone Development
+
+You can also open each domain directly while developing:
+
 Runtime URLs:
 
 - shell: `http://localhost:3000`
 - products: `http://localhost:3001`
 - cart: `http://localhost:3002`
 - profile: `http://localhost:3003`
+
+The individual URLs are useful for local development and standalone verification. In the intended portal experience, users enter through the shell at `http://localhost:3000`.
+
+## Portfolio Screens
+
+Screenshots for the four main routes belong in [`docs/screenshots`](docs/screenshots/README.md). This keeps visual evidence separate from application code and makes it easy to embed the latest captures in this README.
+
+| Screen   | Shell route | Asset name       |
+| -------- | ----------- | ---------------- |
+| Home     | `/`         | `shell-home.png` |
+| Products | `/products` | `products.png`   |
+| Cart     | `/cart`     | `cart.png`       |
+| Profile  | `/profile`  | `profile.png`    |
 
 ## Test, Build, And Validation
 
@@ -248,12 +269,12 @@ Each remote is loaded through an `iframe`, so styles from one remote do not leak
 
 ### 2. Domain boundary
 
-Inside `products` and `cart`, domain-specific layout classes live in CSS Modules instead of broad global selectors.
+All apps consume the same Tailwind-powered CSS entrypoint from `@commerce/shared-ui`. Shared `hf-*` utility classes and semantic tokens define the visual language, while each domain keeps its own components and business layout decisions.
 
 That means:
 
-- shared tokens stay global and reusable
-- domain-specific selectors stay scoped
+- shared visual primitives stay global and reusable
+- domain components retain ownership of their layout and behavior
 - the repo is safer if one remote is later rendered without an iframe
 
 ## Problems Faced And How They Were Handled
@@ -268,10 +289,10 @@ That means:
 - problem: a remote failure should not take down the whole portal
 - response: the shell uses timeout-based fallback UI, a route-level outage drill, and host-side error boundaries
 
-### Style leakage risk
+### Style consistency risk
 
-- problem: even with `iframe` isolation, broad selectors inside remotes make future composition changes riskier
-- response: move domain-specific layout classes into CSS Modules and keep shared primitives in `@commerce/shared-ui`
+- problem: independently owned apps can drift into separate visual languages
+- response: use the shared Tailwind CSS entrypoint and the `@commerce/shared-ui` primitives while keeping business UI inside its owning domain
 
 ### Boundary drift
 
@@ -282,78 +303,3 @@ That means:
 
 - problem: hardcoded event strings and payload assumptions create silent coupling
 - response: centralize event names, payload types, envelopes, and guards in `@commerce/shared-types`, then add node-based integration checks around that flow
-
-## Shared Package Versioning Note
-
-Right now the shared packages live inside one workspace and move in lockstep with the apps.
-
-That is fine for a learning repo, but a production setup would usually add stronger versioning discipline such as:
-
-- explicit semver for `shared-types` and `shared-ui`
-- contract change notes for any event or payload updates
-- compatibility rules for host and remotes during rolling deployments
-- CI checks that block breaking shared-contract changes unless all dependent apps are updated
-
-## Day 22-25 Highlights
-
-### Day 22: smoke tests
-
-- added lightweight Node-based smoke coverage for app scripts, route entrypoints, and shared package surfaces
-- kept the tests lightweight so they reinforce architecture without dragging in a full browser stack too early
-
-### Day 23: integration tests
-
-- added contract-level integration checks for typed envelopes
-- verified the `products -> shell -> cart` flow through shared contracts and shell runtime helpers
-- verified route builders and auth handoff envelopes stay aligned with shared event names
-
-### Day 24: build and validation workflow
-
-- added root scripts for `test`, `test:smoke`, `test:integration`, and `validate`
-- updated the Nuxt wrapper so `profile` build and type tooling run more reliably in this workspace
-- kept per-app build scripts as first-class commands for independent module ownership
-
-### Day 25: production-thinking documentation
-
-- documented why micro frontend makes sense here
-- documented the main problems already encountered and the trade-offs behind the current composition strategy
-- added a clear “what I would do differently in production” section instead of pretending the demo is already production-perfect
-
-## What I Would Do Differently In A Production Setup
-
-- move from `iframe`-first composition to a more deliberate runtime integration strategy once framework and hosting constraints are clear
-- add real observability: remote load metrics, structured error reporting, and correlation across host and remotes
-- version `shared-types` and `shared-ui` as publishable contracts instead of workspace-only packages
-- add browser-driven integration or E2E checks for route loading, deep links, badge updates, and fallback UX
-- introduce remote manifests, caching policy, and deployment metadata so host and remotes can roll out independently with safer compatibility checks
-- tighten auth, session, and permission boundaries instead of relying on a lightweight demo handoff
-
-## Current Status
-
-Completed through Day 25:
-
-- shell + 3 remotes created
-- typed contracts in `shared-types`
-- shared primitives in `shared-ui`
-- route-level runtime composition in the shell
-- typed products-to-shell event flow
-- shell-to-cart snapshot sync
-- lazy loading for remote surfaces
-- shell-side fallback UI and error boundaries
-- simulated cart remote outage flow
-- CSS Module scoping for domain-specific styles in `products` and `cart`
-- README architecture, production notes, and boundary documentation
-- import boundary check script
-- node-based smoke tests and integration tests
-- root validation workflow for tests + boundaries + independent builds
-
-Next likely steps:
-
-- screenshots or GIF demo for the portfolio README
-- browser-driven route verification and badge-update E2E coverage
-- CV bullets and a STAR interview story
-- a future experiment with real Module Federation once the cross-framework constraints are intentionally chosen
-
-## Nuxt Remote Note
-
-`apps/profile` stays pinned to `Nuxt 3.12.4` in this workspace for stability with the current local environment.
